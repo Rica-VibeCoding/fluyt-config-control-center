@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -88,8 +89,8 @@ export const AuditLogs = () => {
 
   const [filters, setFilters] = useState({
     user: '',
-    action: '',
-    table: '',
+    action: 'all',
+    table: 'all',
     dateRange: undefined as DateRange | undefined
   });
 
@@ -117,10 +118,10 @@ export const AuditLogs = () => {
     if (filters.user && !log.userName.toLowerCase().includes(filters.user.toLowerCase())) {
       return false;
     }
-    if (filters.action && log.action !== filters.action) {
+    if (filters.action !== 'all' && log.action !== filters.action) {
       return false;
     }
-    if (filters.table && log.table !== filters.table) {
+    if (filters.table !== 'all' && log.table !== filters.table) {
       return false;
     }
     if (searchTerm && !log.userName.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -161,8 +162,8 @@ export const AuditLogs = () => {
   const clearFilters = () => {
     setFilters({
       user: '',
-      action: '',
-      table: '',
+      action: 'all',
+      table: 'all',
       dateRange: undefined
     });
     setSearchTerm('');
@@ -213,7 +214,7 @@ export const AuditLogs = () => {
                     <SelectValue placeholder="Todas as ações" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todas as ações</SelectItem>
+                    <SelectItem value="all">Todas as ações</SelectItem>
                     {actions.map((action) => (
                       <SelectItem key={action.value} value={action.value}>
                         {action.label}
@@ -233,7 +234,7 @@ export const AuditLogs = () => {
                     <SelectValue placeholder="Todas as tabelas" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todas as tabelas</SelectItem>
+                    <SelectItem value="all">Todas as tabelas</SelectItem>
                     {tables.map((table) => (
                       <SelectItem key={table} value={table}>
                         {table}
