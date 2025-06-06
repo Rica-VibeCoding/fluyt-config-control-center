@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus, Edit, Trash2, Settings } from 'lucide-react';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Contractor {
@@ -167,13 +167,11 @@ export const ContractorManagement = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <div className="space-y-4">
+      {/* Header simplificado */}
+      <div className="border-b border-border pb-4">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5" />
-            Gestão de Montadores
-          </CardTitle>
+          <h2 className="text-xl font-semibold text-foreground">Gestão de Montadores</h2>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button onClick={handleCloseDialog}>
@@ -255,73 +253,78 @@ export const ContractorManagement = () => {
             </DialogContent>
           </Dialog>
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nome/Empresa</TableHead>
-                <TableHead>Categoria</TableHead>
-                <TableHead>Valor Fixo</TableHead>
-                <TableHead>Contato</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Ações</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {contractors.map((contractor) => (
-                <TableRow key={contractor.id}>
-                  <TableCell className="font-medium">{contractor.name}</TableCell>
-                  <TableCell>
-                    <Badge variant={getCategoryBadgeVariant(contractor.category)}>
-                      {categories.find(c => c.value === contractor.category)?.label}
+      </div>
+
+      {/* Tabela com melhor contraste e densidade */}
+      <div className="border border-border rounded-md overflow-hidden bg-background">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/50 border-b-2 border-border">
+              <TableHead className="font-semibold text-foreground py-3">Nome/Empresa</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">Categoria</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">Valor Fixo</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">Contato</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">Status</TableHead>
+              <TableHead className="font-semibold text-foreground py-3 text-right">Ações</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {contractors.map((contractor, index) => (
+              <TableRow 
+                key={contractor.id}
+                className={`border-b border-border/50 hover:bg-muted/30 ${
+                  index % 2 === 0 ? "bg-background" : "bg-muted/20"
+                }`}
+              >
+                <TableCell className="font-medium py-2.5 text-foreground">{contractor.name}</TableCell>
+                <TableCell className="py-2.5">
+                  <Badge variant={getCategoryBadgeVariant(contractor.category)}>
+                    {categories.find(c => c.value === contractor.category)?.label}
+                  </Badge>
+                </TableCell>
+                <TableCell className="py-2.5 text-foreground">
+                  {new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  }).format(contractor.fixedValue)}
+                </TableCell>
+                <TableCell className="text-sm text-foreground py-2.5">
+                  {contractor.phone}
+                </TableCell>
+                <TableCell className="py-2.5">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => toggleStatus(contractor.id)}
+                  >
+                    <Badge variant={contractor.isActive ? "default" : "secondary"}>
+                      {contractor.isActive ? 'Ativo' : 'Inativo'}
                     </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL'
-                    }).format(contractor.fixedValue)}
-                  </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
-                    {contractor.phone}
-                  </TableCell>
-                  <TableCell>
+                  </Button>
+                </TableCell>
+                <TableCell className="text-right py-2.5">
+                  <div className="flex justify-end gap-2">
                     <Button
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
-                      onClick={() => toggleStatus(contractor.id)}
+                      onClick={() => handleEdit(contractor)}
                     >
-                      <Badge variant={contractor.isActive ? "default" : "secondary"}>
-                        {contractor.isActive ? 'Ativo' : 'Inativo'}
-                      </Badge>
+                      <Edit className="h-4 w-4" />
                     </Button>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(contractor)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleDelete(contractor.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDelete(contractor.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
   );
 };

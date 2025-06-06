@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Store, AlertTriangle, Save } from 'lucide-react';
+import { AlertTriangle, Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface StoreConfiguration {
@@ -106,231 +106,227 @@ export const StoreConfig = () => {
   const marginImpact = calculateMarginImpact(config.deflatorCost);
 
   return (
-    <div className="space-y-6">
-      <Alert>
-        <AlertTriangle className="h-4 w-4" />
-        <AlertDescription>
-          <strong>Configuração Crítica:</strong> Estas configurações impactam diretamente o cálculo de margens, 
-          numeração de orçamentos e limites de desconto. Alterações geram snapshots históricos.
-        </AlertDescription>
-      </Alert>
+    <div className="space-y-4">
+      {/* Header com alerta simplificado */}
+      <div className="border-b border-border pb-4">
+        <h2 className="text-xl font-semibold text-foreground mb-3">Configurações da Loja</h2>
+        <Alert>
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Configuração Crítica:</strong> Estas configurações impactam diretamente o cálculo de margens, 
+            numeração de orçamentos e limites de desconto. Alterações geram snapshots históricos.
+          </AlertDescription>
+        </Alert>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Store className="h-5 w-5" />
-            Configurações da Loja
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div>
-            <Label htmlFor="store">Loja *</Label>
-            <Select value={selectedStore} onValueChange={handleStoreChange}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {stores.map((store) => (
-                  <SelectItem key={store.id} value={store.id}>
-                    {store.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+      {/* Seleção de loja sempre visível */}
+      <div className="bg-muted/30 border border-border rounded-md p-4">
+        <Label htmlFor="store" className="text-sm font-medium mb-2 block">Loja</Label>
+        <Select value={selectedStore} onValueChange={handleStoreChange}>
+          <SelectTrigger className="w-full max-w-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {stores.map((store) => (
+              <SelectItem key={store.id} value={store.id}>
+                {store.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Configurações em layout mais compacto */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Configurações Financeiras */}
+        <div className="border border-border rounded-md p-4 bg-background">
+          <h3 className="font-semibold text-foreground mb-4 border-b border-border pb-2">Configurações Financeiras</h3>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="deflatorCost" className="text-sm font-medium">Deflator Custo Fábrica (%)</Label>
+              <Input
+                id="deflatorCost"
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={config.deflatorCost}
+                onChange={(e) => setConfig(prev => ({ 
+                  ...prev, 
+                  deflatorCost: Number(e.target.value) 
+                }))}
+                className="mt-1"
+              />
+              <div className="text-xs text-muted-foreground mt-1">
+                Impacto na margem: R$ {marginImpact.difference.toFixed(2)} por R$ 1.000
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="freightPercentage" className="text-sm font-medium">Percentual de Frete (%)</Label>
+              <Input
+                id="freightPercentage"
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={config.freightPercentage}
+                onChange={(e) => setConfig(prev => ({ 
+                  ...prev, 
+                  freightPercentage: Number(e.target.value) 
+                }))}
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="defaultMeasurementValue" className="text-sm font-medium">Valor Padrão Medição (R$)</Label>
+              <Input
+                id="defaultMeasurementValue"
+                type="number"
+                min="0"
+                step="0.01"
+                value={config.defaultMeasurementValue}
+                onChange={(e) => setConfig(prev => ({ 
+                  ...prev, 
+                  defaultMeasurementValue: Number(e.target.value) 
+                }))}
+                className="mt-1"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Limites de Desconto */}
+        <div className="border border-border rounded-md p-4 bg-background">
+          <h3 className="font-semibold text-foreground mb-4 border-b border-border pb-2">Limites de Desconto por Perfil</h3>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="discountLimitVendor" className="text-sm font-medium">Limite Vendedor (%)</Label>
+              <Input
+                id="discountLimitVendor"
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={config.discountLimitVendor}
+                onChange={(e) => setConfig(prev => ({ 
+                  ...prev, 
+                  discountLimitVendor: Number(e.target.value) 
+                }))}
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="discountLimitManager" className="text-sm font-medium">Limite Gerente (%)</Label>
+              <Input
+                id="discountLimitManager"
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={config.discountLimitManager}
+                onChange={(e) => setConfig(prev => ({ 
+                  ...prev, 
+                  discountLimitManager: Number(e.target.value) 
+                }))}
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="discountLimitAdminMaster" className="text-sm font-medium">Limite Admin Master (%)</Label>
+              <Input
+                id="discountLimitAdminMaster"
+                type="number"
+                min="0"
+                max="100"
+                step="0.1"
+                value={config.discountLimitAdminMaster}
+                onChange={(e) => setConfig(prev => ({ 
+                  ...prev, 
+                  discountLimitAdminMaster: Number(e.target.value) 
+                }))}
+                className="mt-1"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Configuração de Numeração */}
+        <div className="lg:col-span-2 border border-border rounded-md p-4 bg-background">
+          <h3 className="font-semibold text-foreground mb-4 border-b border-border pb-2">Configuração de Numeração</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <Label htmlFor="numberPrefix" className="text-sm font-medium">Prefixo</Label>
+              <Input
+                id="numberPrefix"
+                value={config.numberPrefix}
+                onChange={(e) => setConfig(prev => ({ 
+                  ...prev, 
+                  numberPrefix: e.target.value.toUpperCase() 
+                }))}
+                placeholder="ORC"
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="numberFormat" className="text-sm font-medium">Formato</Label>
+              <Select
+                value={config.numberFormat}
+                onValueChange={(value) => setConfig(prev => ({ 
+                  ...prev, 
+                  numberFormat: value 
+                }))}
+              >
+                <SelectTrigger className="mt-1">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="YYYY-NNNNNN">YYYY-NNNNNN</SelectItem>
+                  <SelectItem value="NNNNNN">NNNNNN</SelectItem>
+                  <SelectItem value="MM-YYYY-NNNN">MM-YYYY-NNNN</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label htmlFor="initialNumber" className="text-sm font-medium">Número Inicial</Label>
+              <Input
+                id="initialNumber"
+                type="number"
+                min="1"
+                value={config.initialNumber}
+                onChange={(e) => setConfig(prev => ({ 
+                  ...prev, 
+                  initialNumber: Number(e.target.value) 
+                }))}
+                className="mt-1"
+              />
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Financial Settings */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Configurações Financeiras</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="deflatorCost">Deflator Custo Fábrica (%) *</Label>
-                  <Input
-                    id="deflatorCost"
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="0.1"
-                    value={config.deflatorCost}
-                    onChange={(e) => setConfig(prev => ({ 
-                      ...prev, 
-                      deflatorCost: Number(e.target.value) 
-                    }))}
-                  />
-                  <div className="text-sm text-muted-foreground mt-1">
-                    Impacto na margem: R$ {marginImpact.difference.toFixed(2)} por R$ 1.000
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="freightPercentage">Percentual de Frete (%)</Label>
-                  <Input
-                    id="freightPercentage"
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="0.1"
-                    value={config.freightPercentage}
-                    onChange={(e) => setConfig(prev => ({ 
-                      ...prev, 
-                      freightPercentage: Number(e.target.value) 
-                    }))}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="defaultMeasurementValue">Valor Padrão Medição (R$)</Label>
-                  <Input
-                    id="defaultMeasurementValue"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={config.defaultMeasurementValue}
-                    onChange={(e) => setConfig(prev => ({ 
-                      ...prev, 
-                      defaultMeasurementValue: Number(e.target.value) 
-                    }))}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Discount Limits */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Limites de Desconto por Perfil</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="discountLimitVendor">Limite Vendedor (%)</Label>
-                  <Input
-                    id="discountLimitVendor"
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="0.1"
-                    value={config.discountLimitVendor}
-                    onChange={(e) => setConfig(prev => ({ 
-                      ...prev, 
-                      discountLimitVendor: Number(e.target.value) 
-                    }))}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="discountLimitManager">Limite Gerente (%)</Label>
-                  <Input
-                    id="discountLimitManager"
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="0.1"
-                    value={config.discountLimitManager}
-                    onChange={(e) => setConfig(prev => ({ 
-                      ...prev, 
-                      discountLimitManager: Number(e.target.value) 
-                    }))}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="discountLimitAdminMaster">Limite Admin Master (%)</Label>
-                  <Input
-                    id="discountLimitAdminMaster"
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="0.1"
-                    value={config.discountLimitAdminMaster}
-                    onChange={(e) => setConfig(prev => ({ 
-                      ...prev, 
-                      discountLimitAdminMaster: Number(e.target.value) 
-                    }))}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Numbering Configuration */}
-            <Card className="md:col-span-2">
-              <CardHeader>
-                <CardTitle className="text-lg">Configuração de Numeração</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <Label htmlFor="numberPrefix">Prefixo</Label>
-                    <Input
-                      id="numberPrefix"
-                      value={config.numberPrefix}
-                      onChange={(e) => setConfig(prev => ({ 
-                        ...prev, 
-                        numberPrefix: e.target.value.toUpperCase() 
-                      }))}
-                      placeholder="ORC"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="numberFormat">Formato</Label>
-                    <Select
-                      value={config.numberFormat}
-                      onValueChange={(value) => setConfig(prev => ({ 
-                        ...prev, 
-                        numberFormat: value 
-                      }))}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="YYYY-NNNNNN">YYYY-NNNNNN</SelectItem>
-                        <SelectItem value="NNNNNN">NNNNNN</SelectItem>
-                        <SelectItem value="MM-YYYY-NNNN">MM-YYYY-NNNN</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="initialNumber">Número Inicial</Label>
-                    <Input
-                      id="initialNumber"
-                      type="number"
-                      min="1"
-                      value={config.initialNumber}
-                      onChange={(e) => setConfig(prev => ({ 
-                        ...prev, 
-                        initialNumber: Number(e.target.value) 
-                      }))}
-                    />
-                  </div>
-                </div>
-
-                <div className="mt-4 p-3 bg-muted rounded-lg">
-                  <div className="text-sm font-medium">Exemplo de numeração:</div>
-                  <div className="text-lg font-mono">
-                    {config.numberPrefix}-{config.numberFormat.replace('YYYY', '2024').replace('MM', '06').replace(/N+/g, config.initialNumber.toString().padStart(6, '0'))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="mt-4 p-3 bg-muted/50 rounded border border-border">
+            <div className="text-sm font-medium text-foreground">Exemplo de numeração:</div>
+            <div className="text-lg font-mono text-foreground">
+              {config.numberPrefix}-{config.numberFormat.replace('YYYY', '2024').replace('MM', '06').replace(/N+/g, config.initialNumber.toString().padStart(6, '0'))}
+            </div>
           </div>
+        </div>
+      </div>
 
-          <div className="flex justify-end">
-            <Button onClick={handleSave} className="flex items-center gap-2">
-              <Save className="h-4 w-4" />
-              Salvar Configurações
-            </Button>
-          </div>
-
-          <div className="text-sm text-muted-foreground">
-            Última atualização: {new Date(config.updatedAt).toLocaleDateString('pt-BR')}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Footer com ações */}
+      <div className="border-t border-border pt-4 flex items-center justify-between">
+        <div className="text-sm text-muted-foreground">
+          Última atualização: {new Date(config.updatedAt).toLocaleDateString('pt-BR')}
+        </div>
+        <Button onClick={handleSave} className="flex items-center gap-2">
+          <Save className="h-4 w-4" />
+          Salvar Configurações
+        </Button>
+      </div>
     </div>
   );
 };

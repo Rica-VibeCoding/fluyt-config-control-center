@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus, Edit, Trash2, Layers, Users } from 'lucide-react';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Sector {
@@ -117,13 +117,11 @@ export const SectorManagement = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <div className="space-y-4">
+      {/* Header simplificado */}
+      <div className="border-b border-border pb-4">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Layers className="h-5 w-5" />
-            Gestão de Setores
-          </CardTitle>
+          <h2 className="text-xl font-semibold text-foreground">Gestão de Setores</h2>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button onClick={() => {
@@ -172,56 +170,58 @@ export const SectorManagement = () => {
             </DialogContent>
           </Dialog>
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nome</TableHead>
-                <TableHead>Descrição</TableHead>
-                <TableHead>Colaboradores</TableHead>
-                <TableHead>Criado em</TableHead>
-                <TableHead className="text-right">Ações</TableHead>
+      </div>
+
+      {/* Tabela com melhor contraste e densidade */}
+      <div className="border border-border rounded-md overflow-hidden bg-background">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/50 border-b-2 border-border">
+              <TableHead className="font-semibold text-foreground py-3">Nome</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">Descrição</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">Colaboradores</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">Criado em</TableHead>
+              <TableHead className="font-semibold text-foreground py-3 text-right">Ações</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sectors.map((sector, index) => (
+              <TableRow 
+                key={sector.id}
+                className={`border-b border-border/50 hover:bg-muted/30 ${
+                  index % 2 === 0 ? "bg-background" : "bg-muted/20"
+                }`}
+              >
+                <TableCell className="font-medium py-2.5 text-foreground">{sector.name}</TableCell>
+                <TableCell className="text-muted-foreground py-2.5">{sector.description}</TableCell>
+                <TableCell className="py-2.5">
+                  <span className="text-foreground font-medium">{sector.employeeCount}</span>
+                </TableCell>
+                <TableCell className="py-2.5 text-foreground">{new Date(sector.createdAt).toLocaleDateString('pt-BR')}</TableCell>
+                <TableCell className="text-right py-2.5">
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEdit(sector)}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDelete(sector.id)}
+                      disabled={sector.employeeCount > 0}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sectors.map((sector) => (
-                <TableRow key={sector.id}>
-                  <TableCell className="font-medium">{sector.name}</TableCell>
-                  <TableCell className="text-muted-foreground">{sector.description}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                      {sector.employeeCount}
-                    </div>
-                  </TableCell>
-                  <TableCell>{new Date(sector.createdAt).toLocaleDateString('pt-BR')}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(sector)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleDelete(sector.id)}
-                        disabled={sector.employeeCount > 0}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
   );
 };
