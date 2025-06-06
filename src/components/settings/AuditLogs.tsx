@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, FileText, Search, Filter } from 'lucide-react';
+import { CalendarIcon, FileText, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -151,10 +151,10 @@ export const AuditLogs = () => {
 
   const formatChanges = (changes: Record<string, { old: any; new: any }>) => {
     return Object.entries(changes).map(([field, change]) => (
-      <div key={field} className="text-xs">
-        <span className="font-medium">{field}:</span>{' '}
-        <span className="text-red-600">{change.old?.toString() || 'null'}</span>{' '}
-        → <span className="text-green-600">{change.new?.toString() || 'null'}</span>
+      <div key={field} className="text-xs leading-relaxed">
+        <span className="font-medium text-foreground">{field}:</span>{' '}
+        <span className="text-red-700 bg-red-50 px-1 rounded">{change.old?.toString() || 'null'}</span>{' '}
+        → <span className="text-green-700 bg-green-50 px-1 rounded">{change.new?.toString() || 'null'}</span>
       </div>
     ));
   };
@@ -170,173 +170,183 @@ export const AuditLogs = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <FileText className="h-5 w-5" />
-          Logs de Auditoria
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Filters */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium">Filtros</h3>
-              <Button variant="outline" size="sm" onClick={clearFilters}>
-                Limpar Filtros
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div>
-                <Label htmlFor="searchTerm">Buscar</Label>
-                <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="searchTerm"
-                    placeholder="Usuário ou tabela..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="action">Ação</Label>
-                <Select
-                  value={filters.action}
-                  onValueChange={(value) => setFilters(prev => ({ ...prev, action: value }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Todas as ações" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas as ações</SelectItem>
-                    {actions.map((action) => (
-                      <SelectItem key={action.value} value={action.value}>
-                        {action.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label htmlFor="table">Tabela</Label>
-                <Select
-                  value={filters.table}
-                  onValueChange={(value) => setFilters(prev => ({ ...prev, table: value }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Todas as tabelas" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas as tabelas</SelectItem>
-                    {tables.map((table) => (
-                      <SelectItem key={table} value={table}>
-                        {table}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label>Período</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !filters.dateRange && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {filters.dateRange?.from ? (
-                        filters.dateRange.to ? (
-                          <>
-                            {format(filters.dateRange.from, "dd/MM/yyyy", { locale: ptBR })} -{" "}
-                            {format(filters.dateRange.to, "dd/MM/yyyy", { locale: ptBR })}
-                          </>
-                        ) : (
-                          format(filters.dateRange.from, "dd/MM/yyyy", { locale: ptBR })
-                        )
-                      ) : (
-                        "Selecione o período"
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      initialFocus
-                      mode="range"
-                      defaultMonth={filters.dateRange?.from}
-                      selected={filters.dateRange}
-                      onSelect={(range) => setFilters(prev => ({ ...prev, dateRange: range }))}
-                      numberOfMonths={2}
-                      locale={ptBR}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Results */}
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Data/Hora</TableHead>
-                <TableHead>Usuário</TableHead>
-                <TableHead>Ação</TableHead>
-                <TableHead>Tabela</TableHead>
-                <TableHead>Alterações</TableHead>
-                <TableHead>IP</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredLogs.map((log) => (
-                <TableRow key={log.id}>
-                  <TableCell className="text-sm">
-                    {new Date(log.timestamp).toLocaleString('pt-BR')}
-                  </TableCell>
-                  <TableCell className="font-medium">{log.userName}</TableCell>
-                  <TableCell>
-                    <Badge variant={getActionBadgeVariant(log.action)}>
-                      {getActionLabel(log.action)}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <code className="bg-muted px-2 py-1 rounded text-sm">
-                      {log.table}
-                    </code>
-                  </TableCell>
-                  <TableCell>
-                    <div className="max-w-sm">
-                      {formatChanges(log.changes)}
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
-                    {log.ipAddress}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+    <div className="space-y-4">
+      {/* Header simplificado */}
+      <div className="border-b border-border pb-4">
+        <div className="flex items-center gap-3">
+          <FileText className="h-5 w-5 text-muted-foreground" />
+          <h2 className="text-xl font-semibold text-foreground">Logs de Auditoria</h2>
         </div>
+      </div>
 
+      {/* Filtros sempre visíveis e compactos */}
+      <div className="bg-muted/30 border border-border rounded-md p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-medium text-foreground">Filtros</h3>
+          <Button variant="outline" size="sm" onClick={clearFilters} className="h-8 px-3 text-xs">
+            Limpar
+          </Button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div>
+            <Label htmlFor="searchTerm" className="text-sm font-medium mb-1 block">Buscar</Label>
+            <div className="relative">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="searchTerm"
+                placeholder="Usuário ou tabela..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-8 h-9 text-sm"
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="action" className="text-sm font-medium mb-1 block">Ação</Label>
+            <Select
+              value={filters.action}
+              onValueChange={(value) => setFilters(prev => ({ ...prev, action: value }))}
+            >
+              <SelectTrigger className="h-9 text-sm">
+                <SelectValue placeholder="Todas as ações" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas as ações</SelectItem>
+                {actions.map((action) => (
+                  <SelectItem key={action.value} value={action.value}>
+                    {action.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="table" className="text-sm font-medium mb-1 block">Tabela</Label>
+            <Select
+              value={filters.table}
+              onValueChange={(value) => setFilters(prev => ({ ...prev, table: value }))}
+            >
+              <SelectTrigger className="h-9 text-sm">
+                <SelectValue placeholder="Todas as tabelas" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas as tabelas</SelectItem>
+                {tables.map((table) => (
+                  <SelectItem key={table} value={table}>
+                    {table}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label className="text-sm font-medium mb-1 block">Período</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal h-9 text-sm",
+                    !filters.dateRange && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {filters.dateRange?.from ? (
+                    filters.dateRange.to ? (
+                      <>
+                        {format(filters.dateRange.from, "dd/MM/yyyy", { locale: ptBR })} -{" "}
+                        {format(filters.dateRange.to, "dd/MM/yyyy", { locale: ptBR })}
+                      </>
+                    ) : (
+                      format(filters.dateRange.from, "dd/MM/yyyy", { locale: ptBR })
+                    )
+                  ) : (
+                    "Selecione o período"
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  initialFocus
+                  mode="range"
+                  defaultMonth={filters.dateRange?.from}
+                  selected={filters.dateRange}
+                  onSelect={(range) => setFilters(prev => ({ ...prev, dateRange: range }))}
+                  numberOfMonths={2}
+                  locale={ptBR}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+      </div>
+
+      {/* Tabela com melhor contraste e densidade */}
+      <div className="border border-border rounded-md overflow-hidden bg-background">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/50 border-b-2 border-border">
+              <TableHead className="font-semibold text-foreground py-3">Data/Hora</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">Usuário</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">Ação</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">Tabela</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">Alterações</TableHead>
+              <TableHead className="font-semibold text-foreground py-3">IP</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredLogs.map((log, index) => (
+              <TableRow 
+                key={log.id} 
+                className={cn(
+                  "border-b border-border/50 hover:bg-muted/30",
+                  index % 2 === 0 ? "bg-background" : "bg-muted/20"
+                )}
+              >
+                <TableCell className="py-2.5 text-sm text-foreground">
+                  {new Date(log.timestamp).toLocaleString('pt-BR')}
+                </TableCell>
+                <TableCell className="font-medium py-2.5 text-foreground">{log.userName}</TableCell>
+                <TableCell className="py-2.5">
+                  <Badge variant={getActionBadgeVariant(log.action)} className="text-xs">
+                    {getActionLabel(log.action)}
+                  </Badge>
+                </TableCell>
+                <TableCell className="py-2.5">
+                  <code className="bg-muted/60 border border-border px-2 py-1 rounded text-xs font-mono text-foreground">
+                    {log.table}
+                  </code>
+                </TableCell>
+                <TableCell className="py-2.5">
+                  <div className="max-w-sm space-y-1">
+                    {formatChanges(log.changes)}
+                  </div>
+                </TableCell>
+                <TableCell className="py-2.5 text-sm text-muted-foreground font-mono">
+                  {log.ipAddress}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        
         {filteredLogs.length === 0 && (
-          <div className="text-center py-8 text-muted-foreground">
-            Nenhum log encontrado com os filtros aplicados.
+          <div className="text-center py-12 text-muted-foreground bg-muted/20">
+            <div className="text-sm">Nenhum log encontrado com os filtros aplicados.</div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={clearFilters}
+              className="mt-2 text-xs"
+            >
+              Limpar filtros
+            </Button>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
