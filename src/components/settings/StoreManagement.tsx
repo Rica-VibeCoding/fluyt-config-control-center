@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Building2, MapPin, Phone, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useCompanyManagement } from '@/hooks/useCompanyManagement';
 
@@ -149,36 +149,48 @@ export const StoreManagement = () => {
   };
 
   return (
-    <div className="space-y-4">
-      {/* Header simplificado */}
-      <div className="border-b border-border pb-4">
+    <div className="space-y-6">
+      {/* Header no estilo business moderno */}
+      <div className="business-card p-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-foreground">Gestão de Lojas</h2>
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Building2 className="h-5 w-5 text-blue-600" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-800">Gestão de Lojas</h3>
+              <p className="text-sm text-slate-600">Controle todas as unidades da empresa</p>
+            </div>
+          </div>
+          
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={() => {
-                setEditingStore(null);
-                setFormData({ name: '', companyId: '', address: '', phone: '', email: '' });
-              }}>
+              <Button 
+                className="business-button"
+                onClick={() => {
+                  setEditingStore(null);
+                  setFormData({ name: '', companyId: '', address: '', phone: '', email: '' });
+                }}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Nova Loja
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-lg">
               <DialogHeader>
-                <DialogTitle>
+                <DialogTitle className="text-slate-800">
                   {editingStore ? 'Editar Loja' : 'Nova Loja'}
                 </DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <Label htmlFor="companyId">Empresa *</Label>
+                  <Label htmlFor="companyId" className="text-slate-700 font-medium">Empresa *</Label>
                   <Select
                     value={formData.companyId}
                     onValueChange={(value) => setFormData(prev => ({ ...prev, companyId: value }))}
                     required
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="business-input">
                       <SelectValue placeholder="Selecione a empresa" />
                     </SelectTrigger>
                     <SelectContent>
@@ -197,51 +209,55 @@ export const StoreManagement = () => {
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="name">Nome da Loja *</Label>
+                  <Label htmlFor="name" className="text-slate-700 font-medium">Nome da Loja *</Label>
                   <Input
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="Digite o nome da loja"
+                    className="business-input"
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="address">Endereço Completo *</Label>
+                  <Label htmlFor="address" className="text-slate-700 font-medium">Endereço Completo *</Label>
                   <Input
                     id="address"
                     value={formData.address}
                     onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
                     placeholder="Rua, número, bairro, cidade"
+                    className="business-input"
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="phone">Telefone *</Label>
+                  <Label htmlFor="phone" className="text-slate-700 font-medium">Telefone *</Label>
                   <Input
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                     placeholder="(11) 9999-9999"
+                    className="business-input"
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="email">Email *</Label>
+                  <Label htmlFor="email" className="text-slate-700 font-medium">Email *</Label>
                   <Input
                     id="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                     placeholder="loja@empresa.com.br"
+                    className="business-input"
                     required
                   />
                 </div>
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-3 pt-4">
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
                     Cancelar
                   </Button>
-                  <Button type="submit" disabled={activeCompanies.length === 0}>
+                  <Button type="submit" className="business-button" disabled={activeCompanies.length === 0}>
                     {editingStore ? 'Atualizar' : 'Cadastrar'}
                   </Button>
                 </div>
@@ -253,66 +269,86 @@ export const StoreManagement = () => {
 
       {/* Alerta se não houver empresas ativas */}
       {activeCompanies.length === 0 && (
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-center text-muted-foreground">
-              <p className="mb-2">Nenhuma empresa ativa encontrada.</p>
-              <p className="text-sm">Cadastre e ative uma empresa primeiro para poder criar lojas.</p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="business-card p-6">
+          <div className="text-center text-slate-600">
+            <Building2 className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+            <p className="text-lg font-medium mb-2">Nenhuma empresa ativa encontrada</p>
+            <p className="text-sm">Cadastre e ative uma empresa primeiro para poder criar lojas.</p>
+          </div>
+        </div>
       )}
 
-      {/* Tabela com melhor contraste e densidade */}
-      <div className="border border-border rounded-md overflow-hidden bg-background">
+      {/* Tabela moderna inspirada no software original */}
+      <div className="business-table overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted/50 border-b-2 border-border">
-              <TableHead className="font-semibold text-foreground py-3">Loja</TableHead>
-              <TableHead className="font-semibold text-foreground py-3">Empresa</TableHead>
-              <TableHead className="font-semibold text-foreground py-3">Contato</TableHead>
-              <TableHead className="font-semibold text-foreground py-3">Colaboradores</TableHead>
-              <TableHead className="font-semibold text-foreground py-3">Status</TableHead>
-              <TableHead className="font-semibold text-foreground py-3 text-right">Ações</TableHead>
+            <TableRow className="bg-slate-50 border-b-2 border-slate-200">
+              <TableHead className="font-semibold text-slate-700 py-4">Loja</TableHead>
+              <TableHead className="font-semibold text-slate-700 py-4">Empresa</TableHead>
+              <TableHead className="font-semibold text-slate-700 py-4">Contato</TableHead>
+              <TableHead className="font-semibold text-slate-700 py-4">Colaboradores</TableHead>
+              <TableHead className="font-semibold text-slate-700 py-4">Status</TableHead>
+              <TableHead className="font-semibold text-slate-700 py-4 text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {stores.map((store, index) => (
               <TableRow 
                 key={store.id}
-                className={`border-b border-border/50 hover:bg-muted/30 ${
-                  index % 2 === 0 ? "bg-background" : "bg-muted/20"
+                className={`border-b border-slate-200 hover:bg-slate-50 transition-colors ${
+                  index % 2 === 0 ? "bg-white" : "bg-slate-25"
                 }`}
               >
-                <TableCell className="py-2.5">
-                  <div>
-                    <div className="font-medium text-foreground">{store.name}</div>
-                    <div className="text-sm text-muted-foreground">{store.address}</div>
+                <TableCell className="py-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                      <Building2 className="h-4 w-4 text-blue-600" />
+                    </div>
+                    <div>
+                      <div className="font-medium text-slate-800">{store.name}</div>
+                      <div className="text-sm text-slate-600 flex items-center gap-1 mt-1">
+                        <MapPin className="h-3 w-3" />
+                        {store.address}
+                      </div>
+                    </div>
                   </div>
                 </TableCell>
-                <TableCell className="py-2.5">
-                  <span className="text-foreground">{store.companyName}</span>
+                <TableCell className="py-4">
+                  <span className="text-slate-800 font-medium">{store.companyName}</span>
                 </TableCell>
-                <TableCell className="py-2.5">
-                  <div className="text-sm">
-                    <div className="text-foreground">{store.phone}</div>
-                    <div className="text-muted-foreground">{store.email}</div>
+                <TableCell className="py-4">
+                  <div className="space-y-1">
+                    <div className="text-sm text-slate-800 flex items-center gap-1">
+                      <Phone className="h-3 w-3 text-slate-500" />
+                      {store.phone}
+                    </div>
+                    <div className="text-sm text-slate-600 flex items-center gap-1">
+                      <Mail className="h-3 w-3 text-slate-500" />
+                      {store.email}
+                    </div>
                   </div>
                 </TableCell>
-                <TableCell className="py-2.5">
-                  <span className="text-foreground font-medium">{store.employeeCount}</span>
+                <TableCell className="py-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-800 font-medium">{store.employeeCount}</span>
+                    <span className="text-xs text-slate-500">pessoas</span>
+                  </div>
                 </TableCell>
-                <TableCell className="py-2.5">
-                  <Badge variant={store.isActive ? "default" : "secondary"}>
+                <TableCell className="py-4">
+                  <Badge 
+                    variant={store.isActive ? "default" : "secondary"}
+                    className={store.isActive ? "bg-green-100 text-green-800 border-green-200" : ""}
+                  >
                     {store.isActive ? 'Ativo' : 'Inativo'}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-right py-2.5">
+                <TableCell className="text-right py-4">
                   <div className="flex justify-end gap-2">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => handleEdit(store)}
+                      className="h-8 w-8 p-0 border-slate-300 hover:border-blue-500 hover:text-blue-600"
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
@@ -321,6 +357,7 @@ export const StoreManagement = () => {
                       size="sm"
                       onClick={() => handleDelete(store.id)}
                       disabled={store.employeeCount > 0}
+                      className="h-8 w-8 p-0 border-slate-300 hover:border-red-500 hover:text-red-600 disabled:opacity-50"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
