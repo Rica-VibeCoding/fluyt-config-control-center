@@ -80,10 +80,14 @@ export const useSectorManagement = () => {
     });
   };
 
+  // Função para ser usada em outros componentes que precisam listar setores
+  const getAllSectors = () => sectors;
+
   return {
     sectors,
     createSector,
     updateSector,
-    deleteSector
+    deleteSector,
+    getAllSectors
   };
 };

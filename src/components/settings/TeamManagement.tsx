@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,9 +7,9 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Switch } from '@/components/ui/switch';
 import { Plus, Edit, Trash2, UserCog, Store } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useSectorManagement } from '@/hooks/useSectorManagement';
 
 interface TeamMember {
   id: string;
@@ -32,6 +31,9 @@ interface TeamMember {
 
 export const TeamManagement = () => {
   const { toast } = useToast();
+  const { getAllSectors } = useSectorManagement();
+  const sectors = getAllSectors();
+  
   const [team, setTeam] = useState<TeamMember[]>([
     {
       id: '1',
@@ -81,12 +83,6 @@ export const TeamManagement = () => {
   const stores = [
     { id: '1', name: 'Loja Centro' },
     { id: '2', name: 'Loja Shopping Norte' }
-  ];
-
-  const sectors = [
-    { id: '1', name: 'Vendas' },
-    { id: '2', name: 'Medição' },
-    { id: '3', name: 'Montagem' }
   ];
 
   const profiles = [
