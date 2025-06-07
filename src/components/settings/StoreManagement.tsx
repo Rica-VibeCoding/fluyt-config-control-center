@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useCompanyManagement } from '@/hooks/useCompanyManagement';
 
 interface Store {
   id: string;
@@ -26,12 +27,17 @@ interface Store {
 
 export const StoreManagement = () => {
   const { toast } = useToast();
+  const { companies } = useCompanyManagement();
+  
+  // Filter only active companies for the dropdown
+  const activeCompanies = companies.filter(company => company.isActive);
+  
   const [stores, setStores] = useState<Store[]>([
     {
       id: '1',
       name: 'Loja Centro',
       companyId: '1',
-      companyName: 'Fluyt Móveis Ltda',
+      companyName: 'Fluyt Soluções Tecnológicas',
       address: 'Rua das Flores, 123 - Centro',
       phone: '(11) 3333-4444',
       email: 'centro@fluyt.com.br',
@@ -43,7 +49,7 @@ export const StoreManagement = () => {
       id: '2',
       name: 'Loja Shopping Norte',
       companyId: '1',
-      companyName: 'Fluyt Móveis Ltda',
+      companyName: 'Fluyt Soluções Tecnológicas',
       address: 'Shopping Norte - Piso 2, Loja 205',
       phone: '(11) 5555-6666',
       email: 'norte@fluyt.com.br',
@@ -52,11 +58,6 @@ export const StoreManagement = () => {
       createdAt: '2024-02-15'
     }
   ]);
-  
-  const companies = [
-    { id: '1', name: 'Fluyt Móveis Ltda' },
-    { id: '2', name: 'Design House Brasil' }
-  ];
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingStore, setEditingStore] = useState<Store | null>(null);
@@ -71,11 +72,11 @@ export const StoreManagement = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const company = companies.find(c => c.id === formData.companyId);
+    const company = activeCompanies.find(c => c.id === formData.companyId);
     if (!company) {
       toast({
         title: "Empresa obrigatória",
-        description: "Selecione uma empresa para a loja.",
+        description: "Selecione uma empresa ativa para a loja.",
         variant: "destructive"
       });
       return;
@@ -106,7 +107,6 @@ export const StoreManagement = () => {
       };
       setStores(prev => [...prev, newStore]);
       
-      // Here would create default store configurations
       toast({
         title: "Loja cadastrada",
         description: "Nova loja adicionada com configurações padrão criadas."
@@ -182,11 +182,17 @@ export const StoreManagement = () => {
                       <SelectValue placeholder="Selecione a empresa" />
                     </SelectTrigger>
                     <SelectContent>
-                      {companies.map((company) => (
-                        <SelectItem key={company.id} value={company.id}>
-                          {company.name}
+                      {activeCompanies.length === 0 ? (
+                        <SelectItem value="" disabled>
+                          Nenhuma empresa ativa encontrada
                         </SelectItem>
-                      ))}
+                      ) : (
+                        activeCompanies.map((company) => (
+                          <SelectItem key={company.id} value={company.id}>
+                            {company.name}
+                          </SelectItem>
+                        ))
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
@@ -235,7 +241,7 @@ export const StoreManagement = () => {
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
                     Cancelar
                   </Button>
-                  <Button type="submit">
+                  <Button type="submit" disabled={activeCompanies.length === 0}>
                     {editingStore ? 'Atualizar' : 'Cadastrar'}
                   </Button>
                 </div>
@@ -244,6 +250,18 @@ export const StoreManagement = () => {
           </Dialog>
         </div>
       </div>
+
+      {/* Alerta se não houver empresas ativas */}
+      {activeCompanies.length === 0 && (
+        <Card>
+          <CardContent className="p-6">
+            <div className="text-center text-muted-foreground">
+              <p className="mb-2">Nenhuma empresa ativa encontrada.</p>
+              <p className="text-sm">Cadastre e ative uma empresa primeiro para poder criar lojas.</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Tabela com melhor contraste e densidade */}
       <div className="border border-border rounded-md overflow-hidden bg-background">
