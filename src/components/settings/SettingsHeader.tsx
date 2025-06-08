@@ -1,11 +1,8 @@
-
 import React from 'react';
 import { Settings as SettingsIcon } from 'lucide-react';
-
 export const SettingsHeader = () => {
-  return (
-    <div className="app-header">
-      <div className="container mx-auto px-6 py-8">
+  return <div className="app-header bg-gray-300">
+      <div className="container mx-auto px-6 py-8 bg-zinc-700">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 app-icon-container">
             <SettingsIcon className="h-6 w-6" />
@@ -16,6 +13,5 @@ export const SettingsHeader = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -6,22 +5,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Switch } from '@/components/ui/switch';
 import { Edit, Trash2 } from 'lucide-react';
 import { Company } from '@/types/company';
-
 interface CompanyTableProps {
   companies: Company[];
   onEdit: (company: Company) => void;
   onDelete: (companyId: string) => void;
   onToggleStatus: (companyId: string) => void;
 }
-
 export const CompanyTable: React.FC<CompanyTableProps> = ({
   companies,
   onEdit,
   onDelete,
   onToggleStatus
 }) => {
-  return (
-    <div className="rounded-md border">
+  return <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
@@ -33,12 +29,11 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {companies.map((company) => (
-            <TableRow key={company.id}>
+          {companies.map(company => <TableRow key={company.id}>
               <TableCell>
                 <div>
                   <div className="font-medium">{company.name}</div>
-                  <div className="text-sm text-muted-foreground">{company.address}</div>
+                  <div className="text-sm text-muted-foreground bg-zinc-200">{company.address}</div>
                 </div>
               </TableCell>
               <TableCell>{company.cnpj}</TableCell>
@@ -50,10 +45,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
               </TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
-                  <Switch
-                    checked={company.isActive}
-                    onCheckedChange={() => onToggleStatus(company.id)}
-                  />
+                  <Switch checked={company.isActive} onCheckedChange={() => onToggleStatus(company.id)} />
                   <Badge variant={company.isActive ? "default" : "secondary"}>
                     {company.isActive ? 'Ativa' : 'Inativa'}
                   </Badge>
@@ -61,26 +53,16 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onEdit(company)}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => onEdit(company)}>
                     <Edit className="h-4 w-4" />
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onDelete(company.id)}
-                  >
+                  <Button variant="outline" size="sm" onClick={() => onDelete(company.id)}>
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </TableCell>
-            </TableRow>
-          ))}
+            </TableRow>)}
         </TableBody>
       </Table>
-    </div>
-  );
+    </div>;
 };
