@@ -105,7 +105,7 @@ const Settings = () => {
       case 'sistema-auditoria':
         return <AuditLogs />;
       default:
-        return <Card className="business-card">
+        return <Card className="app-card">
             <CardContent className="p-6">
               <div className="text-center text-muted-foreground">
                 Funcionalidade em desenvolvimento
@@ -116,17 +116,17 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
-      {/* Header moderno inspirado no original */}
-      <div className="business-header">
+    <div className="min-h-screen bg-background">
+      {/* Header usando tokens semânticos */}
+      <div className="app-header">
         <div className="container mx-auto px-6 py-8">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-              <SettingsIcon className="h-6 w-6 text-white" />
+            <div className="w-12 h-12 app-icon-container">
+              <SettingsIcon className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-slate-800">Configurações do Sistema</h1>
-              <p className="text-slate-600 mt-1">Gerencie todos os aspectos da sua aplicação</p>
+              <h1 className="text-3xl font-bold text-foreground">Configurações do Sistema</h1>
+              <p className="text-muted-foreground mt-1">Gerencie todos os aspectos da sua aplicação</p>
             </div>
           </div>
         </div>
@@ -134,9 +134,9 @@ const Settings = () => {
 
       <div className="container mx-auto px-6 py-6">
         <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-6">
-          {/* Navegação principal com estilo modernizado */}
-          <div className="business-tabs">
-            <TabsList className="grid w-full grid-cols-4 h-14 business-tabs">
+          {/* Navegação principal */}
+          <div className="bg-muted rounded-lg p-1">
+            <TabsList className="grid w-full grid-cols-4 h-14 bg-transparent">
               {sections.map(section => {
                 const Icon = section.icon;
                 const isDisabled = section.adminOnly && userProfile !== 'ADMIN_MASTER';
@@ -145,7 +145,7 @@ const Settings = () => {
                     key={section.id} 
                     value={section.id} 
                     disabled={isDisabled} 
-                    className={`flex items-center gap-3 h-12 px-4 business-tab data-[state=active]:business-tab-active`}
+                    className="flex items-center gap-3 h-12 px-4 text-muted-foreground hover:text-foreground font-medium rounded-md transition-colors duration-200 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm"
                   >
                     <Icon className="h-5 w-5" />
                     <span className="font-medium">{section.label}</span>
@@ -158,34 +158,34 @@ const Settings = () => {
           {sections.map(section => (
             <TabsContent key={section.id} value={section.id} className="space-y-6">
               {/* Card de informação da seção */}
-              <div className="business-card p-6">
+              <div className="app-card p-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <section.icon className="h-5 w-5 text-blue-600" />
+                  <div className="w-10 h-10 app-icon-container">
+                    <section.icon className="h-5 w-5" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
-                      <h2 className="text-xl font-semibold text-slate-800">{section.label}</h2>
+                      <h2 className="text-xl font-semibold text-foreground">{section.label}</h2>
                       {section.adminOnly && (
                         <Badge variant="destructive" className="text-xs">
                           Admin Only
                         </Badge>
                       )}
                     </div>
-                    <p className="text-slate-600 mt-1">{section.description}</p>
+                    <p className="text-muted-foreground mt-1">{section.description}</p>
                   </div>
                 </div>
               </div>
 
               {/* Sub-navegação */}
               <Tabs defaultValue={section.items[0]?.id} className="space-y-4">
-                <div className="business-tabs">
-                  <TabsList className="grid w-full h-12" style={{ gridTemplateColumns: `repeat(${section.items.length}, 1fr)` }}>
+                <div className="bg-muted rounded-lg p-1">
+                  <TabsList className="grid w-full h-12 bg-transparent" style={{ gridTemplateColumns: `repeat(${section.items.length}, 1fr)` }}>
                     {section.items.map(item => (
                       <TabsTrigger 
                         key={item.id} 
                         value={item.id} 
-                        className="flex items-center gap-2 h-10 px-3 business-tab data-[state=active]:business-tab-active"
+                        className="flex items-center gap-2 h-10 px-3 text-muted-foreground hover:text-foreground font-medium rounded-md transition-colors duration-200 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm"
                       >
                         {item.icon && <item.icon className="h-4 w-4" />}
                         <span className="font-medium text-sm">{item.label}</span>

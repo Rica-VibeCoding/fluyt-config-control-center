@@ -150,23 +150,23 @@ export const StoreManagement = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header no estilo business moderno */}
-      <div className="business-card p-6">
+      {/* Header usando tokens semânticos */}
+      <div className="app-card p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Building2 className="h-5 w-5 text-blue-600" />
+            <div className="w-10 h-10 app-icon-container">
+              <Building2 className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-slate-800">Gestão de Lojas</h3>
-              <p className="text-sm text-slate-600">Controle todas as unidades da empresa</p>
+              <h3 className="text-lg font-semibold text-foreground">Gestão de Lojas</h3>
+              <p className="text-sm text-muted-foreground">Controle todas as unidades da empresa</p>
             </div>
           </div>
           
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button 
-                className="business-button"
+                className="app-button-primary"
                 onClick={() => {
                   setEditingStore(null);
                   setFormData({ name: '', companyId: '', address: '', phone: '', email: '' });
@@ -178,19 +178,19 @@ export const StoreManagement = () => {
             </DialogTrigger>
             <DialogContent className="max-w-lg">
               <DialogHeader>
-                <DialogTitle className="text-slate-800">
+                <DialogTitle className="text-foreground">
                   {editingStore ? 'Editar Loja' : 'Nova Loja'}
                 </DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <Label htmlFor="companyId" className="text-slate-700 font-medium">Empresa *</Label>
+                  <Label htmlFor="companyId" className="text-foreground font-medium">Empresa *</Label>
                   <Select
                     value={formData.companyId}
                     onValueChange={(value) => setFormData(prev => ({ ...prev, companyId: value }))}
                     required
                   >
-                    <SelectTrigger className="business-input">
+                    <SelectTrigger className="app-input">
                       <SelectValue placeholder="Selecione a empresa" />
                     </SelectTrigger>
                     <SelectContent>
@@ -209,47 +209,47 @@ export const StoreManagement = () => {
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="name" className="text-slate-700 font-medium">Nome da Loja *</Label>
+                  <Label htmlFor="name" className="text-foreground font-medium">Nome da Loja *</Label>
                   <Input
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="Digite o nome da loja"
-                    className="business-input"
+                    className="app-input"
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="address" className="text-slate-700 font-medium">Endereço Completo *</Label>
+                  <Label htmlFor="address" className="text-foreground font-medium">Endereço Completo *</Label>
                   <Input
                     id="address"
                     value={formData.address}
                     onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
                     placeholder="Rua, número, bairro, cidade"
-                    className="business-input"
+                    className="app-input"
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="phone" className="text-slate-700 font-medium">Telefone *</Label>
+                  <Label htmlFor="phone" className="text-foreground font-medium">Telefone *</Label>
                   <Input
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                     placeholder="(11) 9999-9999"
-                    className="business-input"
+                    className="app-input"
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="email" className="text-slate-700 font-medium">Email *</Label>
+                  <Label htmlFor="email" className="text-foreground font-medium">Email *</Label>
                   <Input
                     id="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                     placeholder="loja@empresa.com.br"
-                    className="business-input"
+                    className="app-input"
                     required
                   />
                 </div>
@@ -257,7 +257,7 @@ export const StoreManagement = () => {
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
                     Cancelar
                   </Button>
-                  <Button type="submit" className="business-button" disabled={activeCompanies.length === 0}>
+                  <Button type="submit" className="app-button-primary" disabled={activeCompanies.length === 0}>
                     {editingStore ? 'Atualizar' : 'Cadastrar'}
                   </Button>
                 </div>
@@ -269,44 +269,44 @@ export const StoreManagement = () => {
 
       {/* Alerta se não houver empresas ativas */}
       {activeCompanies.length === 0 && (
-        <div className="business-card p-6">
-          <div className="text-center text-slate-600">
-            <Building2 className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+        <div className="app-card p-6">
+          <div className="text-center text-muted-foreground">
+            <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <p className="text-lg font-medium mb-2">Nenhuma empresa ativa encontrada</p>
             <p className="text-sm">Cadastre e ative uma empresa primeiro para poder criar lojas.</p>
           </div>
         </div>
       )}
 
-      {/* Tabela moderna inspirada no software original */}
-      <div className="business-table overflow-hidden">
+      {/* Tabela usando tokens semânticos */}
+      <div className="app-table">
         <Table>
           <TableHeader>
-            <TableRow className="bg-slate-50 border-b-2 border-slate-200">
-              <TableHead className="font-semibold text-slate-700 py-4">Loja</TableHead>
-              <TableHead className="font-semibold text-slate-700 py-4">Empresa</TableHead>
-              <TableHead className="font-semibold text-slate-700 py-4">Contato</TableHead>
-              <TableHead className="font-semibold text-slate-700 py-4">Colaboradores</TableHead>
-              <TableHead className="font-semibold text-slate-700 py-4">Status</TableHead>
-              <TableHead className="font-semibold text-slate-700 py-4 text-right">Ações</TableHead>
+            <TableRow className="bg-muted border-b-2 border-border">
+              <TableHead className="font-semibold text-foreground py-4">Loja</TableHead>
+              <TableHead className="font-semibold text-foreground py-4">Empresa</TableHead>
+              <TableHead className="font-semibold text-foreground py-4">Contato</TableHead>
+              <TableHead className="font-semibold text-foreground py-4">Colaboradores</TableHead>
+              <TableHead className="font-semibold text-foreground py-4">Status</TableHead>
+              <TableHead className="font-semibold text-foreground py-4 text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {stores.map((store, index) => (
               <TableRow 
                 key={store.id}
-                className={`border-b border-slate-200 hover:bg-slate-50 transition-colors ${
-                  index % 2 === 0 ? "bg-white" : "bg-slate-25"
+                className={`border-b border-border hover:bg-muted/50 transition-colors ${
+                  index % 2 === 0 ? "bg-card" : "bg-muted/20"
                 }`}
               >
                 <TableCell className="py-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                      <Building2 className="h-4 w-4 text-blue-600" />
+                    <div className="w-8 h-8 app-icon-container flex-shrink-0 mt-1">
+                      <Building2 className="h-4 w-4" />
                     </div>
                     <div>
-                      <div className="font-medium text-slate-800">{store.name}</div>
-                      <div className="text-sm text-slate-600 flex items-center gap-1 mt-1">
+                      <div className="font-medium text-foreground">{store.name}</div>
+                      <div className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
                         <MapPin className="h-3 w-3" />
                         {store.address}
                       </div>
@@ -314,30 +314,30 @@ export const StoreManagement = () => {
                   </div>
                 </TableCell>
                 <TableCell className="py-4">
-                  <span className="text-slate-800 font-medium">{store.companyName}</span>
+                  <span className="text-foreground font-medium">{store.companyName}</span>
                 </TableCell>
                 <TableCell className="py-4">
                   <div className="space-y-1">
-                    <div className="text-sm text-slate-800 flex items-center gap-1">
-                      <Phone className="h-3 w-3 text-slate-500" />
+                    <div className="text-sm text-foreground flex items-center gap-1">
+                      <Phone className="h-3 w-3 text-muted-foreground" />
                       {store.phone}
                     </div>
-                    <div className="text-sm text-slate-600 flex items-center gap-1">
-                      <Mail className="h-3 w-3 text-slate-500" />
+                    <div className="text-sm text-muted-foreground flex items-center gap-1">
+                      <Mail className="h-3 w-3 text-muted-foreground" />
                       {store.email}
                     </div>
                   </div>
                 </TableCell>
                 <TableCell className="py-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-800 font-medium">{store.employeeCount}</span>
-                    <span className="text-xs text-slate-500">pessoas</span>
+                    <span className="text-foreground font-medium">{store.employeeCount}</span>
+                    <span className="text-xs text-muted-foreground">pessoas</span>
                   </div>
                 </TableCell>
                 <TableCell className="py-4">
                   <Badge 
                     variant={store.isActive ? "default" : "secondary"}
-                    className={store.isActive ? "bg-green-100 text-green-800 border-green-200" : ""}
+                    className={store.isActive ? "app-status-active" : "app-status-inactive"}
                   >
                     {store.isActive ? 'Ativo' : 'Inativo'}
                   </Badge>
@@ -348,7 +348,7 @@ export const StoreManagement = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => handleEdit(store)}
-                      className="h-8 w-8 p-0 border-slate-300 hover:border-blue-500 hover:text-blue-600"
+                      className="h-8 w-8 p-0 border-border hover:border-primary hover:text-primary"
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
@@ -357,7 +357,7 @@ export const StoreManagement = () => {
                       size="sm"
                       onClick={() => handleDelete(store.id)}
                       disabled={store.employeeCount > 0}
-                      className="h-8 w-8 p-0 border-slate-300 hover:border-red-500 hover:text-red-600 disabled:opacity-50"
+                      className="h-8 w-8 p-0 border-border hover:border-destructive hover:text-destructive disabled:opacity-50"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

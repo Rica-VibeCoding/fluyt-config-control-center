@@ -3,93 +3,107 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design system inspirado no software de referência mas modernizado */
+/* Design system moderno e consistente */
 
 @layer base {
   :root {
-    /* Cores inspiradas no software original mas modernizadas */
-    --background: 248 250 252; /* Cinza muito claro, mais suave */
-    --foreground: 30 41 59; /* Azul escuro similar ao original */
+    /* Cores base seguindo padrões de design consistentes */
+    --background: 248 250 252; /* slate-50 - fundo principal suave */
+    --foreground: 15 23 42; /* slate-900 - texto principal com bom contraste */
 
-    --card: 255 255 255;
-    --card-foreground: 30 41 59;
+    --card: 255 255 255; /* branco puro para cards */
+    --card-foreground: 15 23 42; /* texto em cards */
 
     --popover: 255 255 255;
-    --popover-foreground: 30 41 59;
+    --popover-foreground: 15 23 42;
 
-    /* Azul principal similar ao original mas mais vibrante */
-    --primary: 37 99 235; /* Azul vibrante */
-    --primary-foreground: 248 250 252;
+    /* Azul principal profissional */
+    --primary: 59 130 246; /* blue-500 - azul balanceado */
+    --primary-foreground: 255 255 255;
 
-    /* Cinzas mais suaves e modernos */
-    --secondary: 241 245 249;
-    --secondary-foreground: 51 65 85;
+    /* Cinzas neutros para elementos secundários */
+    --secondary: 241 245 249; /* slate-100 */
+    --secondary-foreground: 51 65 85; /* slate-700 */
 
-    --muted: 248 250 252;
-    --muted-foreground: 100 116 139;
+    --muted: 248 250 252; /* slate-50 */
+    --muted-foreground: 100 116 139; /* slate-500 */
 
-    --accent: 241 245 249;
-    --accent-foreground: 51 65 85;
+    --accent: 241 245 249; /* slate-100 */
+    --accent-foreground: 51 65 85; /* slate-700 */
 
-    --destructive: 239 68 68;
-    --destructive-foreground: 248 250 252;
+    --destructive: 239 68 68; /* red-500 */
+    --destructive-foreground: 255 255 255;
 
-    /* Bordas mais suaves */
-    --border: 226 232 240;
-    --input: 226 232 240;
-    --ring: 37 99 235;
+    /* Bordas sutis */
+    --border: 226 232 240; /* slate-200 */
+    --input: 226 232 240; /* slate-200 */
+    --ring: 59 130 246; /* blue-500 */
 
     --radius: 0.5rem;
 
-    /* Sidebar com tons similares ao original */
-    --sidebar-background: 248 250 252;
-    --sidebar-foreground: 30 41 59;
-    --sidebar-primary: 37 99 235;
-    --sidebar-primary-foreground: 248 250 252;
+    /* Sidebar seguindo o padrão */
+    --sidebar-background: 255 255 255;
+    --sidebar-foreground: 15 23 42;
+    --sidebar-primary: 59 130 246;
+    --sidebar-primary-foreground: 255 255 255;
     --sidebar-accent: 241 245 249;
     --sidebar-accent-foreground: 51 65 85;
     --sidebar-border: 226 232 240;
-    --sidebar-ring: 37 99 235;
+    --sidebar-ring: 59 130 246;
+
+    /* Cores específicas para status */
+    --success: 34 197 94; /* green-500 */
+    --success-foreground: 255 255 255;
+    --warning: 245 158 11; /* amber-500 */
+    --warning-foreground: 255 255 255;
+    --info: 59 130 246; /* blue-500 */
+    --info-foreground: 255 255 255;
   }
 
   .dark {
-    /* Dark mode com inspiração no software original */
-    --background: 15 23 42;
-    --foreground: 248 250 252;
+    --background: 2 6 23; /* slate-950 */
+    --foreground: 248 250 252; /* slate-50 */
 
-    --card: 30 41 59;
+    --card: 15 23 42; /* slate-900 */
     --card-foreground: 248 250 252;
 
-    --popover: 30 41 59;
+    --popover: 15 23 42;
     --popover-foreground: 248 250 252;
 
-    --primary: 59 130 246;
+    --primary: 59 130 246; /* blue-500 */
     --primary-foreground: 15 23 42;
 
-    --secondary: 51 65 85;
+    --secondary: 30 41 59; /* slate-800 */
     --secondary-foreground: 248 250 252;
 
-    --muted: 51 65 85;
-    --muted-foreground: 148 163 184;
+    --muted: 30 41 59; /* slate-800 */
+    --muted-foreground: 148 163 184; /* slate-400 */
 
-    --accent: 51 65 85;
+    --accent: 30 41 59; /* slate-800 */
     --accent-foreground: 248 250 252;
 
-    --destructive: 248 113 113;
-    --destructive-foreground: 15 23 42;
+    --destructive: 239 68 68; /* red-500 */
+    --destructive-foreground: 248 250 252;
 
-    --border: 51 65 85;
-    --input: 51 65 85;
-    --ring: 59 130 246;
+    --border: 30 41 59; /* slate-800 */
+    --input: 30 41 59; /* slate-800 */
+    --ring: 59 130 246; /* blue-500 */
 
-    --sidebar-background: 15 23 42;
+    --sidebar-background: 2 6 23;
     --sidebar-foreground: 248 250 252;
     --sidebar-primary: 59 130 246;
     --sidebar-primary-foreground: 15 23 42;
-    --sidebar-accent: 51 65 85;
+    --sidebar-accent: 30 41 59;
     --sidebar-accent-foreground: 248 250 252;
-    --sidebar-border: 51 65 85;
+    --sidebar-border: 30 41 59;
     --sidebar-ring: 59 130 246;
+
+    --success: 34 197 94;
+    --success-foreground: 2 6 23;
+    --warning: 245 158 11;
+    --warning-foreground: 2 6 23;
+    --info: 59 130 246;
+    --info-foreground: 2 6 23;
   }
 }
 
@@ -102,38 +116,43 @@
     @apply bg-background text-foreground;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
+}
 
-  /* Estilo inspirado no software original mas modernizado */
-  .business-header {
-    @apply bg-gradient-to-r from-slate-50 to-blue-50 border-b border-slate-200;
+@layer components {
+  /* Classes utilitárias semânticas */
+  .app-card {
+    @apply bg-card text-card-foreground rounded-lg border shadow-sm;
   }
 
-  .business-card {
-    @apply bg-white rounded-lg shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200;
+  .app-button-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 font-medium rounded-md transition-colors duration-200;
   }
 
-  .business-table {
-    @apply bg-white rounded-lg border border-slate-200 shadow-sm;
+  .app-button-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border font-medium rounded-md transition-colors duration-200;
   }
 
-  .business-button {
-    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors duration-200;
+  .app-input {
+    @apply border-input bg-background focus:border-primary focus:ring-primary/20 focus:ring-2 rounded-md;
   }
 
-  .business-input {
-    @apply border-slate-300 focus:border-blue-500 focus:ring-blue-500 rounded-md;
+  .app-header {
+    @apply bg-gradient-to-r from-background to-muted border-b border-border;
   }
 
-  /* Tabs no estilo do software original modernizado */
-  .business-tabs {
-    @apply bg-slate-50 rounded-lg p-1;
+  .app-table {
+    @apply bg-card rounded-lg border shadow-sm overflow-hidden;
   }
 
-  .business-tab {
-    @apply text-slate-600 hover:text-slate-800 font-medium rounded-md transition-colors duration-200;
+  .app-icon-container {
+    @apply bg-primary/10 text-primary rounded-lg flex items-center justify-center;
   }
 
-  .business-tab-active {
-    @apply bg-white text-blue-600 shadow-sm;
+  .app-status-active {
+    @apply bg-green-50 text-green-700 border-green-200;
+  }
+
+  .app-status-inactive {
+    @apply bg-secondary text-secondary-foreground border-border;
   }
 }
