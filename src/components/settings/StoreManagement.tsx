@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -150,7 +149,7 @@ export const StoreManagement = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header usando tokens semânticos */}
+      {/* Header profissional */}
       <div className="app-card p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -176,7 +175,7 @@ export const StoreManagement = () => {
                 Nova Loja
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-lg">
+            <DialogContent className="max-w-lg bg-card border-border">
               <DialogHeader>
                 <DialogTitle className="text-foreground">
                   {editingStore ? 'Editar Loja' : 'Nova Loja'}
@@ -193,7 +192,7 @@ export const StoreManagement = () => {
                     <SelectTrigger className="app-input">
                       <SelectValue placeholder="Selecione a empresa" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-card border-border">
                       {activeCompanies.length === 0 ? (
                         <SelectItem value="" disabled>
                           Nenhuma empresa ativa encontrada
@@ -253,7 +252,7 @@ export const StoreManagement = () => {
                     required
                   />
                 </div>
-                <div className="flex justify-end gap-3 pt-4">
+                <div className="flex justify-end gap-3 pt-4 border-t border-border">
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
                     Cancelar
                   </Button>
@@ -267,39 +266,37 @@ export const StoreManagement = () => {
         </div>
       </div>
 
-      {/* Alerta se não houver empresas ativas */}
+      {/* Alerta para empresas inativas */}
       {activeCompanies.length === 0 && (
-        <div className="app-card p-6">
-          <div className="text-center text-muted-foreground">
+        <div className="app-card p-8">
+          <div className="text-center">
             <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-lg font-medium mb-2">Nenhuma empresa ativa encontrada</p>
-            <p className="text-sm">Cadastre e ative uma empresa primeiro para poder criar lojas.</p>
+            <h3 className="text-lg font-medium text-foreground mb-2">Nenhuma empresa ativa encontrada</h3>
+            <p className="text-sm text-muted-foreground">Cadastre e ative uma empresa primeiro para poder criar lojas.</p>
           </div>
         </div>
       )}
 
-      {/* Tabela usando tokens semânticos */}
+      {/* Tabela profissional */}
       <div className="app-table">
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted border-b-2 border-border">
-              <TableHead className="font-semibold text-foreground py-4">Loja</TableHead>
-              <TableHead className="font-semibold text-foreground py-4">Empresa</TableHead>
-              <TableHead className="font-semibold text-foreground py-4">Contato</TableHead>
-              <TableHead className="font-semibold text-foreground py-4">Colaboradores</TableHead>
-              <TableHead className="font-semibold text-foreground py-4">Status</TableHead>
-              <TableHead className="font-semibold text-foreground py-4 text-right">Ações</TableHead>
+            <TableRow className="bg-muted/50 border-b border-border hover:bg-muted/50">
+              <TableHead className="font-semibold text-foreground py-4 px-6">Loja</TableHead>
+              <TableHead className="font-semibold text-foreground py-4 px-6">Empresa</TableHead>
+              <TableHead className="font-semibold text-foreground py-4 px-6">Contato</TableHead>
+              <TableHead className="font-semibold text-foreground py-4 px-6">Colaboradores</TableHead>
+              <TableHead className="font-semibold text-foreground py-4 px-6">Status</TableHead>
+              <TableHead className="font-semibold text-foreground py-4 px-6 text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {stores.map((store, index) => (
               <TableRow 
                 key={store.id}
-                className={`border-b border-border hover:bg-muted/50 transition-colors ${
-                  index % 2 === 0 ? "bg-card" : "bg-muted/20"
-                }`}
+                className="border-b border-border hover:bg-muted/30 transition-colors"
               >
-                <TableCell className="py-4">
+                <TableCell className="py-4 px-6">
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 app-icon-container flex-shrink-0 mt-1">
                       <Building2 className="h-4 w-4" />
@@ -313,10 +310,10 @@ export const StoreManagement = () => {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="py-4">
+                <TableCell className="py-4 px-6">
                   <span className="text-foreground font-medium">{store.companyName}</span>
                 </TableCell>
-                <TableCell className="py-4">
+                <TableCell className="py-4 px-6">
                   <div className="space-y-1">
                     <div className="text-sm text-foreground flex items-center gap-1">
                       <Phone className="h-3 w-3 text-muted-foreground" />
@@ -328,13 +325,13 @@ export const StoreManagement = () => {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="py-4">
+                <TableCell className="py-4 px-6">
                   <div className="flex items-center gap-2">
                     <span className="text-foreground font-medium">{store.employeeCount}</span>
                     <span className="text-xs text-muted-foreground">pessoas</span>
                   </div>
                 </TableCell>
-                <TableCell className="py-4">
+                <TableCell className="py-4 px-6">
                   <Badge 
                     variant={store.isActive ? "default" : "secondary"}
                     className={store.isActive ? "app-status-active" : "app-status-inactive"}
@@ -342,7 +339,7 @@ export const StoreManagement = () => {
                     {store.isActive ? 'Ativo' : 'Inativo'}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-right py-4">
+                <TableCell className="text-right py-4 px-6">
                   <div className="flex justify-end gap-2">
                     <Button
                       variant="outline"

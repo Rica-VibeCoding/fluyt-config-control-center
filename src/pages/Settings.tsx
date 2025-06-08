@@ -117,7 +117,7 @@ const Settings = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header usando tokens semânticos */}
+      {/* Header profissional */}
       <div className="app-header">
         <div className="container mx-auto px-6 py-8">
           <div className="flex items-center gap-4">
@@ -134,9 +134,9 @@ const Settings = () => {
 
       <div className="container mx-auto px-6 py-6">
         <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-6">
-          {/* Navegação principal */}
-          <div className="bg-muted rounded-lg p-1">
-            <TabsList className="grid w-full grid-cols-4 h-14 bg-transparent">
+          {/* Navegação principal com design profissional */}
+          <div className="bg-card rounded-lg border border-border p-1 shadow-sm">
+            <TabsList className="grid w-full grid-cols-4 h-14 bg-transparent gap-1">
               {sections.map(section => {
                 const Icon = section.icon;
                 const isDisabled = section.adminOnly && userProfile !== 'ADMIN_MASTER';
@@ -145,7 +145,7 @@ const Settings = () => {
                     key={section.id} 
                     value={section.id} 
                     disabled={isDisabled} 
-                    className="flex items-center gap-3 h-12 px-4 text-muted-foreground hover:text-foreground font-medium rounded-md transition-colors duration-200 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm"
+                    className="flex items-center gap-3 h-12 px-4 app-nav-item rounded-md data-[state=active]:app-nav-item-active data-[state=active]:shadow-sm"
                   >
                     <Icon className="h-5 w-5" />
                     <span className="font-medium">{section.label}</span>
@@ -179,16 +179,16 @@ const Settings = () => {
 
               {/* Sub-navegação */}
               <Tabs defaultValue={section.items[0]?.id} className="space-y-4">
-                <div className="bg-muted rounded-lg p-1">
-                  <TabsList className="grid w-full h-12 bg-transparent" style={{ gridTemplateColumns: `repeat(${section.items.length}, 1fr)` }}>
+                <div className="bg-card rounded-lg border border-border p-1 shadow-sm">
+                  <TabsList className="grid w-full h-12 bg-transparent gap-1" style={{ gridTemplateColumns: `repeat(${section.items.length}, 1fr)` }}>
                     {section.items.map(item => (
                       <TabsTrigger 
                         key={item.id} 
                         value={item.id} 
-                        className="flex items-center gap-2 h-10 px-3 text-muted-foreground hover:text-foreground font-medium rounded-md transition-colors duration-200 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm"
+                        className="flex items-center gap-2 h-10 px-3 app-nav-item rounded-md text-sm data-[state=active]:app-nav-item-active data-[state=active]:shadow-sm"
                       >
                         {item.icon && <item.icon className="h-4 w-4" />}
-                        <span className="font-medium text-sm">{item.label}</span>
+                        <span className="font-medium">{item.label}</span>
                       </TabsTrigger>
                     ))}
                   </TabsList>
