@@ -3,78 +3,77 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design System Profissional - Foco em Produtividade */
-
+/* Design System Profissional - Cores Neutras e Limpas */
 @layer base {
   :root {
-    /* Paleta de cores profissional baseada em cinzas neutros */
-    --background: 255 255 255; /* Branco puro para máximo contraste */
-    --foreground: 30 41 59; /* Slate-800 para texto principal */
+    /* Paleta principal baseada em cinzas neutros */
+    --background: 255 255 255; /* Branco puro */
+    --foreground: 15 23 42; /* Slate-900 para textos */
 
-    --card: 255 255 255; /* Cards em branco */
-    --card-foreground: 30 41 59;
+    --card: 255 255 255; /* Cards brancos */
+    --card-foreground: 15 23 42;
 
     --popover: 255 255 255;
-    --popover-foreground: 30 41 59;
+    --popover-foreground: 15 23 42;
 
-    /* Azul profissional discreto para elementos interativos */
-    --primary: 59 130 246; /* Blue-500 */
+    /* Azul profissional para elementos primários */
+    --primary: 37 99 235; /* Blue-600 */
     --primary-foreground: 255 255 255;
 
-    /* Cinza claro para elementos secundários */
+    /* Cinza muito claro para elementos secundários */
     --secondary: 248 250 252; /* Slate-50 */
     --secondary-foreground: 51 65 85; /* Slate-700 */
 
     --muted: 241 245 249; /* Slate-100 */
     --muted-foreground: 100 116 139; /* Slate-500 */
 
-    --accent: 245 245 245; /* Neutral-100 */
-    --accent-foreground: 64 64 64; /* Neutral-700 */
+    --accent: 243 244 246; /* Gray-100 */
+    --accent-foreground: 55 65 81; /* Gray-700 */
 
-    --destructive: 239 68 68; /* Red-500 */
+    --destructive: 220 38 38; /* Red-600 */
     --destructive-foreground: 255 255 255;
 
     /* Bordas sutis */
-    --border: 229 231 235; /* Gray-200 */
-    --input: 229 231 235;
-    --ring: 59 130 246; /* Blue-500 para focus */
+    --border: 226 232 240; /* Slate-200 */
+    --input: 226 232 240;
+    --ring: 37 99 235; /* Blue-600 para focus */
 
-    --radius: 8px; /* Bordas arredondadas consistentes */
+    --radius: 6px;
 
-    /* Cores de status semânticas */
-    --success: 34 197 94; /* Green-500 */
-    --warning: 245 158 11; /* Amber-500 */
-    --info: 59 130 246; /* Blue-500 */
+    /* Cores de status */
+    --success: 22 163 74; /* Green-600 */
+    --warning: 217 119 6; /* Amber-600 */
+    --info: 37 99 235; /* Blue-600 */
   }
 
   .dark {
-    --background: 8 8 11; /* Zinc-950 */
-    --foreground: 244 244 245; /* Zinc-100 */
+    --background: 2 6 23; /* Slate-950 */
+    --foreground: 248 250 252; /* Slate-50 */
 
-    --card: 24 24 27; /* Zinc-900 */
-    --card-foreground: 244 244 245;
+    --card: 15 23 42; /* Slate-900 */
+    --card-foreground: 248 250 252;
 
-    --popover: 24 24 27;
-    --popover-foreground: 244 244 245;
+    --popover: 15 23 42;
+    --popover-foreground: 248 250 252;
 
-    --primary: 99 102 241; /* Indigo-500 */
-    --primary-foreground: 255 255 255;
+    --primary: 59 130 246; /* Blue-500 */
+    --primary-foreground: 15 23 42;
 
-    --secondary: 39 39 42; /* Zinc-800 */
-    --secondary-foreground: 244 244 245;
+    --secondary: 30 41 59; /* Slate-800 */
+    --secondary-foreground: 226 232 240;
 
-    --muted: 39 39 42;
-    --muted-foreground: 161 161 170; /* Zinc-400 */
+    --muted: 30 41 59;
+    --muted-foreground: 148 163 184; /* Slate-400 */
 
-    --accent: 39 39 42;
-    --accent-foreground: 244 244 245;
+    --accent: 30 41 59;
+    --accent-foreground: 226 232 240;
 
     --destructive: 239 68 68;
-    --destructive-foreground: 244 244 245;
+    --destructive-foreground: 248 250 252;
 
-    --border: 39 39 42;
-    --input: 39 39 42;
-    --ring: 99 102 241;
+    --border: 30 41 59;
+    --input: 30 41 59;
+    --ring: 59 130 246;
   }
 }
 
@@ -84,75 +83,80 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    line-height: 1.5;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold text-foreground;
-    line-height: 1.2;
   }
 }
 
 @layer components {
-  /* Componentes de produtividade profissional */
+  /* Cards e containers */
   .productivity-card {
-    @apply bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-200;
+    @apply bg-card border border-border rounded-lg shadow-sm;
   }
 
   .productivity-header {
-    @apply bg-card border-b border-border sticky top-0 z-10;
+    @apply bg-card border-b border-border;
   }
 
+  /* Navegação */
   .productivity-nav {
-    @apply bg-muted/30 border border-border rounded-lg p-1;
+    @apply bg-muted/50 border border-border rounded-lg p-2;
   }
 
   .productivity-nav-item {
-    @apply px-4 py-2.5 rounded-md font-medium text-muted-foreground hover:text-foreground hover:bg-background transition-all duration-150;
+    @apply px-4 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-background transition-colors;
   }
 
   .productivity-nav-item-active {
     @apply bg-background text-foreground shadow-sm border border-border/50;
   }
 
+  /* Botões */
   .productivity-button-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-lg font-medium transition-colors duration-150 shadow-sm;
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-lg font-medium transition-colors shadow-sm;
   }
 
   .productivity-button-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border px-4 py-2 rounded-lg font-medium transition-colors duration-150;
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border px-4 py-2 rounded-lg font-medium transition-colors;
   }
 
+  /* Inputs */
   .productivity-input {
-    @apply border border-input bg-background px-3 py-2 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-ring transition-all duration-150;
+    @apply border border-input bg-background px-3 py-2 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-ring transition-all;
   }
 
+  /* Tabelas */
   .productivity-table {
     @apply bg-card border border-border rounded-lg overflow-hidden;
   }
 
   .productivity-table-header {
-    @apply bg-muted/50 border-b border-border;
+    @apply bg-muted/30 border-b border-border;
   }
 
   .productivity-table-row {
-    @apply border-b border-border/50 hover:bg-muted/20 transition-colors duration-150;
+    @apply border-b border-border/50 hover:bg-muted/20 transition-colors;
   }
 
+  /* Ícones */
   .productivity-icon-container {
     @apply w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center;
   }
 
+  /* Badges */
   .productivity-badge-active {
     @apply bg-green-50 text-green-700 border border-green-200 px-2 py-1 rounded-md text-xs font-medium;
   }
 
   .productivity-badge-inactive {
-    @apply bg-muted text-muted-foreground border border-border px-2 py-1 rounded-md text-xs font-medium;
+    @apply bg-slate-50 text-slate-500 border border-slate-200 px-2 py-1 rounded-md text-xs font-medium;
   }
 
+  /* Seções */
   .productivity-section {
     @apply space-y-6;
   }
@@ -161,6 +165,7 @@
     @apply space-y-2;
   }
 
+  /* Tipografia */
   .productivity-label {
     @apply text-sm font-medium text-foreground;
   }
@@ -169,7 +174,27 @@
     @apply text-sm text-muted-foreground;
   }
 
-  /* Layout responsivo */
+  .productivity-heading-xl {
+    @apply text-2xl font-semibold text-foreground;
+  }
+
+  .productivity-heading-lg {
+    @apply text-xl font-semibold text-foreground;
+  }
+
+  .productivity-heading-md {
+    @apply text-lg font-semibold text-foreground;
+  }
+
+  .productivity-text-body {
+    @apply text-sm text-foreground;
+  }
+
+  .productivity-text-caption {
+    @apply text-xs text-muted-foreground;
+  }
+
+  /* Layout */
   .productivity-container {
     @apply container mx-auto px-4 sm:px-6 lg:px-8;
   }
@@ -193,36 +218,6 @@
   .productivity-grid-cols-4 {
     @apply grid-cols-2 md:grid-cols-4;
   }
-
-  /* Estados de foco e interação */
-  .productivity-focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-ring;
-  }
-
-  .productivity-hover-lift {
-    @apply hover:shadow-md hover:-translate-y-0.5 transition-all duration-200;
-  }
-
-  /* Tipografia profissional */
-  .productivity-heading-xl {
-    @apply text-2xl font-semibold text-foreground;
-  }
-
-  .productivity-heading-lg {
-    @apply text-xl font-semibold text-foreground;
-  }
-
-  .productivity-heading-md {
-    @apply text-lg font-semibold text-foreground;
-  }
-
-  .productivity-text-body {
-    @apply text-sm text-foreground;
-  }
-
-  .productivity-text-caption {
-    @apply text-xs text-muted-foreground;
-  }
 }
 
 /* Animações suaves */
@@ -231,20 +226,11 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(-8px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
 .animate-fade-in {
   animation: fadeIn 0.2s ease-out;
 }
 
-.animate-slide-in {
-  animation: slideIn 0.2s ease-out;
-}
-
-/* Scrollbar personalizada */
+/* Scrollbar limpa */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

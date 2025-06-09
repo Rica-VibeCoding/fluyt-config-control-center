@@ -10,7 +10,7 @@ import { sections } from '@/data/settingsConfig';
 
 const Settings = () => {
   const [activeSection, setActiveSection] = useState('pessoas');
-  const userProfile = 'ADMIN_MASTER'; // This would come from auth context
+  const userProfile = 'ADMIN_MASTER';
 
   return (
     <div className="min-h-screen bg-background">
