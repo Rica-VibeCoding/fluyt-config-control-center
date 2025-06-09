@@ -1,13 +1,12 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Truck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Transport {
@@ -145,38 +144,50 @@ export const TransportManagement = () => {
   };
 
   return (
-    <div className="space-y-4">
-      {/* Header simplificado */}
-      <div className="border-b border-border pb-4">
+    <div className="productivity-section">
+      {/* Header */}
+      <div className="productivity-card p-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-foreground">Gestão de Transportadoras</h2>
+          <div className="flex items-center gap-4">
+            <div className="productivity-icon-container">
+              <Truck className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="productivity-heading-lg">Gestão de Transportadoras</h2>
+              <p className="productivity-description">
+                Configure e gerencie empresas de transporte e seus valores
+              </p>
+            </div>
+          </div>
+          
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={handleCloseDialog}>
+              <Button className="productivity-button-primary" onClick={handleCloseDialog}>
                 <Plus className="h-4 w-4 mr-2" />
                 Nova Transportadora
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="productivity-card">
               <DialogHeader>
-                <DialogTitle>
+                <DialogTitle className="productivity-heading-md">
                   {editingTransport ? 'Editar Transportadora' : 'Nova Transportadora'}
                 </DialogTitle>
               </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <Label htmlFor="companyName">Nome da Empresa *</Label>
+              <form onSubmit={handleSubmit} className="productivity-section">
+                <div className="productivity-form-group">
+                  <Label htmlFor="companyName" className="productivity-label">Nome da Empresa *</Label>
                   <Input
                     id="companyName"
                     value={formData.companyName}
                     onChange={(e) => setFormData(prev => ({ ...prev, companyName: e.target.value }))}
                     placeholder="Nome da transportadora"
+                    className="productivity-input"
                     required
                   />
                 </div>
                 
-                <div>
-                  <Label htmlFor="fixedValue">Valor Fixo por Entrega (R$) *</Label>
+                <div className="productivity-form-group">
+                  <Label htmlFor="fixedValue" className="productivity-label">Valor Fixo por Entrega (R$) *</Label>
                   <Input
                     id="fixedValue"
                     type="number"
@@ -185,37 +196,40 @@ export const TransportManagement = () => {
                     value={formData.fixedValue}
                     onChange={(e) => setFormData(prev => ({ ...prev, fixedValue: e.target.value }))}
                     placeholder="Valor fixo por entrega"
+                    className="productivity-input"
                     required
                   />
                 </div>
 
-                <div>
-                  <Label htmlFor="phone">Telefone *</Label>
+                <div className="productivity-form-group">
+                  <Label htmlFor="phone" className="productivity-label">Telefone *</Label>
                   <Input
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                     placeholder="(11) 3333-4444"
+                    className="productivity-input"
                     required
                   />
                 </div>
 
-                <div>
-                  <Label htmlFor="email">Email</Label>
+                <div className="productivity-form-group">
+                  <Label htmlFor="email" className="productivity-label">Email</Label>
                   <Input
                     id="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                     placeholder="contato@transportadora.com.br"
+                    className="productivity-input"
                   />
                 </div>
 
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-3 pt-4">
                   <Button type="button" variant="outline" onClick={handleCloseDialog}>
                     Cancelar
                   </Button>
-                  <Button type="submit">
+                  <Button type="submit" className="productivity-button-primary">
                     {editingTransport ? 'Atualizar' : 'Cadastrar'}
                   </Button>
                 </div>
@@ -225,58 +239,59 @@ export const TransportManagement = () => {
         </div>
       </div>
 
-      {/* Tabela com melhor contraste e densidade */}
-      <div className="border border-border rounded-md overflow-hidden bg-background">
+      {/* Tabela */}
+      <div className="productivity-table">
         <Table>
-          <TableHeader>
-            <TableRow className="bg-muted/50 border-b-2 border-border">
-              <TableHead className="font-semibold text-foreground py-3">Empresa</TableHead>
-              <TableHead className="font-semibold text-foreground py-3">Valor Fixo</TableHead>
-              <TableHead className="font-semibold text-foreground py-3">Contato</TableHead>
-              <TableHead className="font-semibold text-foreground py-3">Status</TableHead>
-              <TableHead className="font-semibold text-foreground py-3 text-right">Ações</TableHead>
+          <TableHeader className="productivity-table-header">
+            <TableRow>
+              <TableHead className="productivity-label py-4">Empresa</TableHead>
+              <TableHead className="productivity-label py-4">Valor Fixo</TableHead>
+              <TableHead className="productivity-label py-4">Contato</TableHead>
+              <TableHead className="productivity-label py-4">Status</TableHead>
+              <TableHead className="productivity-label py-4 text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {transports.map((transport, index) => (
-              <TableRow 
-                key={transport.id}
-                className={`border-b border-border/50 hover:bg-muted/30 ${
-                  index % 2 === 0 ? "bg-background" : "bg-muted/20"
-                }`}
-              >
-                <TableCell className="font-medium py-2.5 text-foreground">{transport.companyName}</TableCell>
-                <TableCell className="py-2.5 text-foreground">
+            {transports.map((transport) => (
+              <TableRow key={transport.id} className="productivity-table-row">
+                <TableCell className="productivity-text-body font-medium py-4">
+                  {transport.companyName}
+                </TableCell>
+                <TableCell className="productivity-text-body py-4">
                   {new Intl.NumberFormat('pt-BR', {
                     style: 'currency',
                     currency: 'BRL'
                   }).format(transport.fixedValue)}
                 </TableCell>
-                <TableCell className="py-2.5">
-                  <div className="text-sm">
-                    <div className="text-foreground">{transport.phone}</div>
+                <TableCell className="py-4">
+                  <div className="space-y-1">
+                    <div className="productivity-text-body">{transport.phone}</div>
                     {transport.email && (
-                      <div className="text-muted-foreground">{transport.email}</div>
+                      <div className="productivity-description">{transport.email}</div>
                     )}
                   </div>
                 </TableCell>
-                <TableCell className="py-2.5">
+                <TableCell className="py-4">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => toggleStatus(transport.id)}
+                    className="p-0"
                   >
-                    <Badge variant={transport.isActive ? "default" : "secondary"}>
+                    <Badge 
+                      className={transport.isActive ? 'productivity-badge-active' : 'productivity-badge-inactive'}
+                    >
                       {transport.isActive ? 'Ativo' : 'Inativo'}
                     </Badge>
                   </Button>
                 </TableCell>
-                <TableCell className="text-right py-2.5">
+                <TableCell className="text-right py-4">
                   <div className="flex justify-end gap-2">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => handleEdit(transport)}
+                      className="h-8 w-8 p-0"
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
@@ -284,6 +299,7 @@ export const TransportManagement = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => handleDelete(transport.id)}
+                      className="h-8 w-8 p-0"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

@@ -1,17 +1,23 @@
+
 import React from 'react';
 import { Settings as SettingsIcon } from 'lucide-react';
+
 export const SettingsHeader = () => {
-  return <div className="app-header bg-gray-300">
-      <div className="container mx-auto px-6 py-8 bg-zinc-700">
+  return (
+    <div className="productivity-header">
+      <div className="productivity-container py-8">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 app-icon-container">
+          <div className="productivity-icon-container w-12 h-12">
             <SettingsIcon className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Configurações do Sistema</h1>
-            <p className="text-muted-foreground mt-1">Gerencie todos os aspectos da sua aplicação</p>
+            <h1 className="productivity-heading-xl">Configurações do Sistema</h1>
+            <p className="productivity-description mt-1">
+              Gerencie todos os aspectos da sua aplicação de forma eficiente
+            </p>
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };

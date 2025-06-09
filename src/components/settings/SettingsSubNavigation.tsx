@@ -14,19 +14,19 @@ interface SettingsSubNavigationProps {
 
 export const SettingsSubNavigation = ({ items }: SettingsSubNavigationProps) => {
   return (
-    <div className="bg-card rounded-lg border border-border p-1 shadow-sm">
+    <div className="productivity-nav">
       <TabsList 
-        className="grid w-full h-12 bg-transparent gap-1" 
+        className="grid w-full h-auto bg-transparent gap-1 p-1" 
         style={{ gridTemplateColumns: `repeat(${items.length}, 1fr)` }}
       >
         {items.map(item => (
           <TabsTrigger 
             key={item.id} 
             value={item.id} 
-            className="flex items-center gap-2 h-10 px-3 app-nav-item rounded-md text-sm data-[state=active]:app-nav-item-active data-[state=active]:shadow-sm"
+            className="productivity-nav-item data-[state=active]:productivity-nav-item-active flex items-center gap-2 h-12 px-4"
           >
             {item.icon && <item.icon className="h-4 w-4" />}
-            <span className="font-medium">{item.label}</span>
+            <span className="productivity-text-body font-medium">{item.label}</span>
           </TabsTrigger>
         ))}
       </TabsList>

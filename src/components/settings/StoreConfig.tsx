@@ -1,12 +1,11 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertTriangle, Save } from 'lucide-react';
+import { AlertTriangle, Save, Store } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface StoreConfiguration {
@@ -50,7 +49,6 @@ export const StoreConfig = () => {
 
   const handleStoreChange = (storeId: string) => {
     setSelectedStore(storeId);
-    // Here would load the configuration for the selected store
     const store = stores.find(s => s.id === storeId);
     setConfig(prev => ({
       ...prev,
@@ -60,7 +58,6 @@ export const StoreConfig = () => {
   };
 
   const handleSave = () => {
-    // Validation
     if (config.deflatorCost < 0 || config.deflatorCost > 100) {
       toast({
         title: "Deflator inválido",
@@ -79,7 +76,6 @@ export const StoreConfig = () => {
       return;
     }
 
-    // Create snapshot for history
     const snapshot = {
       ...config,
       updatedAt: new Date().toISOString().split('T')[0],
@@ -95,7 +91,6 @@ export const StoreConfig = () => {
   };
 
   const calculateMarginImpact = (deflator: number) => {
-    // Example calculation showing deflator impact
     const exampleCost = 1000;
     const withoutDeflator = exampleCost;
     const withDeflator = exampleCost * (1 - deflator / 100);
@@ -106,44 +101,61 @@ export const StoreConfig = () => {
   const marginImpact = calculateMarginImpact(config.deflatorCost);
 
   return (
-    <div className="space-y-4">
-      {/* Header com alerta simplificado */}
-      <div className="border-b border-border pb-4">
-        <h2 className="text-xl font-semibold text-foreground mb-3">Configurações da Loja</h2>
-        <Alert>
-          <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>
+    <div className="productivity-section">
+      {/* Header */}
+      <div className="productivity-card p-6">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="productivity-icon-container">
+            <Store className="h-5 w-5" />
+          </div>
+          <div>
+            <h2 className="productivity-heading-lg">Configurações da Loja</h2>
+            <p className="productivity-description">
+              Configure parâmetros críticos que impactam cálculos e operações
+            </p>
+          </div>
+        </div>
+
+        <Alert className="border-warning/20 bg-warning/5">
+          <AlertTriangle className="h-4 w-4 text-warning" />
+          <AlertDescription className="productivity-text-body">
             <strong>Configuração Crítica:</strong> Estas configurações impactam diretamente o cálculo de margens, 
             numeração de orçamentos e limites de desconto. Alterações geram snapshots históricos.
           </AlertDescription>
         </Alert>
       </div>
 
-      {/* Seleção de loja sempre visível */}
-      <div className="bg-muted/30 border border-border rounded-md p-4">
-        <Label htmlFor="store" className="text-sm font-medium mb-2 block">Loja</Label>
-        <Select value={selectedStore} onValueChange={handleStoreChange}>
-          <SelectTrigger className="w-full max-w-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {stores.map((store) => (
-              <SelectItem key={store.id} value={store.id}>
-                {store.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      {/* Seleção de loja */}
+      <div className="productivity-card p-6">
+        <div className="productivity-form-group max-w-xs">
+          <Label htmlFor="store" className="productivity-label">Loja</Label>
+          <Select value={selectedStore} onValueChange={handleStoreChange}>
+            <SelectTrigger className="productivity-input">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {stores.map((store) => (
+                <SelectItem key={store.id} value={store.id}>
+                  {store.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      {/* Configurações em layout mais compacto */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* Configurações */}
+      <div className="productivity-grid productivity-grid-cols-2">
         {/* Configurações Financeiras */}
-        <div className="border border-border rounded-md p-4 bg-background">
-          <h3 className="font-semibold text-foreground mb-4 border-b border-border pb-2">Configurações Financeiras</h3>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="deflatorCost" className="text-sm font-medium">Deflator Custo Fábrica (%)</Label>
+        <div className="productivity-card p-6">
+          <h3 className="productivity-heading-md mb-6 pb-3 border-b border-border">
+            Configurações Financeiras
+          </h3>
+          <div className="productivity-section">
+            <div className="productivity-form-group">
+              <Label htmlFor="deflatorCost" className="productivity-label">
+                Deflator Custo Fábrica (%)
+              </Label>
               <Input
                 id="deflatorCost"
                 type="number"
@@ -155,15 +167,17 @@ export const StoreConfig = () => {
                   ...prev, 
                   deflatorCost: Number(e.target.value) 
                 }))}
-                className="mt-1"
+                className="productivity-input"
               />
-              <div className="text-xs text-muted-foreground mt-1">
+              <div className="productivity-description">
                 Impacto na margem: R$ {marginImpact.difference.toFixed(2)} por R$ 1.000
               </div>
             </div>
 
-            <div>
-              <Label htmlFor="freightPercentage" className="text-sm font-medium">Percentual de Frete (%)</Label>
+            <div className="productivity-form-group">
+              <Label htmlFor="freightPercentage" className="productivity-label">
+                Percentual de Frete (%)
+              </Label>
               <Input
                 id="freightPercentage"
                 type="number"
@@ -175,12 +189,14 @@ export const StoreConfig = () => {
                   ...prev, 
                   freightPercentage: Number(e.target.value) 
                 }))}
-                className="mt-1"
+                className="productivity-input"
               />
             </div>
 
-            <div>
-              <Label htmlFor="defaultMeasurementValue" className="text-sm font-medium">Valor Padrão Medição (R$)</Label>
+            <div className="productivity-form-group">
+              <Label htmlFor="defaultMeasurementValue" className="productivity-label">
+                Valor Padrão Medição (R$)
+              </Label>
               <Input
                 id="defaultMeasurementValue"
                 type="number"
@@ -191,18 +207,22 @@ export const StoreConfig = () => {
                   ...prev, 
                   defaultMeasurementValue: Number(e.target.value) 
                 }))}
-                className="mt-1"
+                className="productivity-input"
               />
             </div>
           </div>
         </div>
 
         {/* Limites de Desconto */}
-        <div className="border border-border rounded-md p-4 bg-background">
-          <h3 className="font-semibold text-foreground mb-4 border-b border-border pb-2">Limites de Desconto por Perfil</h3>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="discountLimitVendor" className="text-sm font-medium">Limite Vendedor (%)</Label>
+        <div className="productivity-card p-6">
+          <h3 className="productivity-heading-md mb-6 pb-3 border-b border-border">
+            Limites de Desconto por Perfil
+          </h3>
+          <div className="productivity-section">
+            <div className="productivity-form-group">
+              <Label htmlFor="discountLimitVendor" className="productivity-label">
+                Limite Vendedor (%)
+              </Label>
               <Input
                 id="discountLimitVendor"
                 type="number"
@@ -214,12 +234,14 @@ export const StoreConfig = () => {
                   ...prev, 
                   discountLimitVendor: Number(e.target.value) 
                 }))}
-                className="mt-1"
+                className="productivity-input"
               />
             </div>
 
-            <div>
-              <Label htmlFor="discountLimitManager" className="text-sm font-medium">Limite Gerente (%)</Label>
+            <div className="productivity-form-group">
+              <Label htmlFor="discountLimitManager" className="productivity-label">
+                Limite Gerente (%)
+              </Label>
               <Input
                 id="discountLimitManager"
                 type="number"
@@ -231,12 +253,14 @@ export const StoreConfig = () => {
                   ...prev, 
                   discountLimitManager: Number(e.target.value) 
                 }))}
-                className="mt-1"
+                className="productivity-input"
               />
             </div>
 
-            <div>
-              <Label htmlFor="discountLimitAdminMaster" className="text-sm font-medium">Limite Admin Master (%)</Label>
+            <div className="productivity-form-group">
+              <Label htmlFor="discountLimitAdminMaster" className="productivity-label">
+                Limite Admin Master (%)
+              </Label>
               <Input
                 id="discountLimitAdminMaster"
                 type="number"
@@ -248,84 +272,88 @@ export const StoreConfig = () => {
                   ...prev, 
                   discountLimitAdminMaster: Number(e.target.value) 
                 }))}
-                className="mt-1"
+                className="productivity-input"
               />
-            </div>
-          </div>
-        </div>
-
-        {/* Configuração de Numeração */}
-        <div className="lg:col-span-2 border border-border rounded-md p-4 bg-background">
-          <h3 className="font-semibold text-foreground mb-4 border-b border-border pb-2">Configuração de Numeração</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="numberPrefix" className="text-sm font-medium">Prefixo</Label>
-              <Input
-                id="numberPrefix"
-                value={config.numberPrefix}
-                onChange={(e) => setConfig(prev => ({ 
-                  ...prev, 
-                  numberPrefix: e.target.value.toUpperCase() 
-                }))}
-                placeholder="ORC"
-                className="mt-1"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="numberFormat" className="text-sm font-medium">Formato</Label>
-              <Select
-                value={config.numberFormat}
-                onValueChange={(value) => setConfig(prev => ({ 
-                  ...prev, 
-                  numberFormat: value 
-                }))}
-              >
-                <SelectTrigger className="mt-1">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="YYYY-NNNNNN">YYYY-NNNNNN</SelectItem>
-                  <SelectItem value="NNNNNN">NNNNNN</SelectItem>
-                  <SelectItem value="MM-YYYY-NNNN">MM-YYYY-NNNN</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label htmlFor="initialNumber" className="text-sm font-medium">Número Inicial</Label>
-              <Input
-                id="initialNumber"
-                type="number"
-                min="1"
-                value={config.initialNumber}
-                onChange={(e) => setConfig(prev => ({ 
-                  ...prev, 
-                  initialNumber: Number(e.target.value) 
-                }))}
-                className="mt-1"
-              />
-            </div>
-          </div>
-
-          <div className="mt-4 p-3 bg-muted/50 rounded border border-border">
-            <div className="text-sm font-medium text-foreground">Exemplo de numeração:</div>
-            <div className="text-lg font-mono text-foreground">
-              {config.numberPrefix}-{config.numberFormat.replace('YYYY', '2024').replace('MM', '06').replace(/N+/g, config.initialNumber.toString().padStart(6, '0'))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Footer com ações */}
-      <div className="border-t border-border pt-4 flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">
-          Última atualização: {new Date(config.updatedAt).toLocaleDateString('pt-BR')}
+      {/* Configuração de Numeração */}
+      <div className="productivity-card p-6">
+        <h3 className="productivity-heading-md mb-6 pb-3 border-b border-border">
+          Configuração de Numeração
+        </h3>
+        <div className="productivity-grid productivity-grid-cols-3">
+          <div className="productivity-form-group">
+            <Label htmlFor="numberPrefix" className="productivity-label">Prefixo</Label>
+            <Input
+              id="numberPrefix"
+              value={config.numberPrefix}
+              onChange={(e) => setConfig(prev => ({ 
+                ...prev, 
+                numberPrefix: e.target.value.toUpperCase() 
+              }))}
+              placeholder="ORC"
+              className="productivity-input"
+            />
+          </div>
+
+          <div className="productivity-form-group">
+            <Label htmlFor="numberFormat" className="productivity-label">Formato</Label>
+            <Select
+              value={config.numberFormat}
+              onValueChange={(value) => setConfig(prev => ({ 
+                ...prev, 
+                numberFormat: value 
+              }))}
+            >
+              <SelectTrigger className="productivity-input">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="YYYY-NNNNNN">YYYY-NNNNNN</SelectItem>
+                <SelectItem value="NNNNNN">NNNNNN</SelectItem>
+                <SelectItem value="MM-YYYY-NNNN">MM-YYYY-NNNN</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="productivity-form-group">
+            <Label htmlFor="initialNumber" className="productivity-label">Número Inicial</Label>
+            <Input
+              id="initialNumber"
+              type="number"
+              min="1"
+              value={config.initialNumber}
+              onChange={(e) => setConfig(prev => ({ 
+                ...prev, 
+                initialNumber: Number(e.target.value) 
+              }))}
+              className="productivity-input"
+            />
+          </div>
         </div>
-        <Button onClick={handleSave} className="flex items-center gap-2">
-          <Save className="h-4 w-4" />
-          Salvar Configurações
-        </Button>
+
+        <div className="mt-6 p-4 bg-muted/30 rounded-lg border border-border">
+          <div className="productivity-label mb-2">Exemplo de numeração:</div>
+          <div className="text-lg font-mono text-foreground">
+            {config.numberPrefix}-{config.numberFormat.replace('YYYY', '2024').replace('MM', '06').replace(/N+/g, config.initialNumber.toString().padStart(6, '0'))}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="productivity-card p-6">
+        <div className="flex items-center justify-between">
+          <div className="productivity-description">
+            Última atualização: {new Date(config.updatedAt).toLocaleDateString('pt-BR')}
+          </div>
+          <Button onClick={handleSave} className="productivity-button-primary">
+            <Save className="h-4 w-4 mr-2" />
+            Salvar Configurações
+          </Button>
+        </div>
       </div>
     </div>
   );
