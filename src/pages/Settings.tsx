@@ -13,7 +13,7 @@ const Settings = () => {
   const userProfile = 'ADMIN_MASTER';
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <SettingsHeader />
 
       <div className="productivity-container py-8">

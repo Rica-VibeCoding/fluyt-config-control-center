@@ -1,18 +1,21 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Settings, Users, DollarSign, FileText, Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
+
 const Index = () => {
-  return <div className="min-h-screen bg-zinc-100">
+  return (
+    <div className="min-h-screen bg-white">
       <div className="container mx-auto p-6">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <Building2 className="h-8 w-8 text-primary" />
+            <div className="p-2 bg-blue-50 rounded-lg">
+              <Building2 className="h-8 w-8 text-blue-600" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold">Sistema Fluyt</h1>
-              <p className="text-xl text-muted-foreground">Sistema de Validação</p>
+              <h1 className="text-4xl font-bold text-slate-900">Sistema Fluyt</h1>
+              <p className="text-xl text-slate-600">Sistema de Validação</p>
             </div>
           </div>
         </div>
@@ -138,6 +141,8 @@ const Index = () => {
           </Card>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
